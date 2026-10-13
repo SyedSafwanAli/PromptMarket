@@ -1,0 +1,76 @@
+# PHASE 03 — PROMPTATLAS DESIGN SYSTEM
+
+Read the existing theme and documentation. Build the reusable design system before building the full homepage.
+
+## Brand direction
+
+PromptAtlas is a high-quality editorial discovery platform for AI prompts. It should feel thoughtfully art-directed, welcoming, useful, and fast—not like a generic AI-generated SaaS landing page.
+
+Use:
+- Burgundy `#8B2626`
+- Orange `#EF6905`
+- Pale butter yellow `#F1E5A1`
+- Olive green `#486C2F`
+- Warm off-white `#FCFAF6`
+- White, charcoal, and muted gray as supporting colors
+
+Use burgundy for key brand moments, orange for deliberate accents and calls to action, olive for selected supporting states, and butter yellow as a controlled highlight. Do not use all four colors at equal intensity everywhere.
+
+## Build
+
+Create a documented token system using CSS custom properties for:
+- Colors
+- Typography
+- Spacing
+- Content widths
+- Layout gaps
+- Borders
+- Focus rings
+- Motion durations
+- Easing
+- Z-index layers
+- Responsive breakpoints
+
+Use responsive typography with sensible maximum sizes. Choose a readable system font stack initially. If custom fonts are introduced later, use properly licensed local font files, appropriate subsets and weights, and font-display settings.
+
+Build consistent styling for:
+- Primary and secondary buttons
+- Text links
+- Form controls
+- Search field
+- Navigation
+- Breadcrumbs
+- Tags
+- Category links
+- Prompt content
+- Copy controls
+- Empty states
+- Error and success messages
+- Pagination
+- Focus and disabled states
+
+Do not make every component a rounded card. Prefer open editorial layouts, whitespace, typography, subtle separators, and visual grouping.
+
+## Motion system
+
+Animations should communicate state or improve orientation.
+
+Use lightweight CSS transforms and opacity transitions when appropriate. Keep movement restrained and short. Avoid animating layout-heavy properties when possible.
+
+Respect `prefers-reduced-motion: reduce`. Avoid scroll-jacking, autoplay animation loops, excessive parallax, and mandatory entrance animations.
+
+Ensure interactive controls respond immediately and remain usable on touch devices.
+
+## Responsive rules
+
+Design mobile-first and verify:
+- Small phones around 320–375 CSS pixels
+- Typical phones
+- Tablets
+- Desktop and wide desktop
+
+Avoid horizontal overflow, tiny text, clipped controls, and fixed-width sections that break on mobile.
+
+## Completion criteria
+
+Document the design tokens. Update the theme styles. Demonstrate where the tokens are used. Run responsive and accessibility checks where tools allow. Do not create the complete homepage content in this phase.

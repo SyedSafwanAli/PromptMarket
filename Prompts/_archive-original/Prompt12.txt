@@ -1,0 +1,42 @@
+# PHASE 12 — PROMPTATLAS CONTENT OPERATIONS
+
+Build a practical editorial workflow for the owner and a small team that initially publishes prompts themselves.
+
+## Goal
+
+Make it easy to publish around five to six high-quality prompts per day without compromising originality, usefulness, or SEO quality.
+
+## Admin workflow
+
+Review the existing prompt post type and editor. Add only the fields and editorial guidance that genuinely improve publishing.
+
+For each prompt, the team should be able to enter:
+- A descriptive, unique title
+- The full prompt text
+- An original explanation of what it does
+- Appropriate categories and tags
+- Relevant AI tool/model metadata if known
+- Usage notes or customization guidance where helpful
+- A featured image only when useful and legally permitted
+- Draft, review, schedule, and publish status
+
+## Editorial quality
+
+Provide a documented publishing checklist:
+1. Confirm the prompt is useful and meaningfully distinct.
+2. Check spelling and clarity.
+3. Add a descriptive, unique title.
+4. Explain the use case in original language.
+5. Assign accurate categories and tags.
+6. Verify that the prompt content displays and copies correctly.
+7. Preview desktop and mobile layouts.
+8. Check for duplicate or near-duplicate content.
+9. Schedule or publish when ready.
+
+Do not create hundreds of thin pages simply to target keyword variations. Do not fabricate prompt performance metrics or copy counts.
+
+## Operational documents
+
+Create a content calendar template and a repeatable prompt publishing SOP. Make the system usable by a non-technical editor without exposing unnecessary administrator permissions.
+
+Do not implement public creator submissions or payments. Report the exact publishing workflow and any remaining manual tasks.

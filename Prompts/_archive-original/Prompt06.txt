@@ -1,0 +1,60 @@
+# PHASE 06 — BUILD REAL PROMPT DISCOVERY AND SEARCH
+
+Read the project documentation and inspect the existing prompt content model.
+
+## Goal
+
+Implement a useful search experience that returns real prompt results. Start with a lightweight, maintainable WordPress-native solution. Do not add a paid search service or vector database without demonstrating a need and getting approval.
+
+## Search requirements
+
+Support:
+- Prompt title and content matching
+- Categories and tags
+- Basic relevance ordering
+- Pagination
+- Empty queries
+- No-result states
+- Search result snippets
+- Filters that reflect real available data
+- Search terms passed safely through WordPress
+- Accessible forms and results
+
+Investigate the installed WordPress search behavior and improve it where appropriate. Avoid querying the entire database on every keystroke.
+
+## Better matching
+
+Create a maintainable path toward:
+- Common synonyms
+- Alternate spellings
+- Movie and character aliases
+- English and Roman Urdu variations
+- Typo-tolerant matching
+- Multilingual search
+
+Start with curated aliases, normalized text, and efficient indexed fields where suitable. Do not claim semantic search works unless a real semantic retrieval mechanism exists.
+
+For larger datasets, evaluate a dedicated search engine only after measuring the limitations of the current solution. Explain hosting, maintenance, and cost implications before proposing external infrastructure.
+
+## Security and abuse prevention
+
+Validate and sanitize search parameters. Limit expensive requests. Do not allow arbitrary SQL fragments or unrestricted database scans from user input.
+
+If live suggestions are added, implement a small, accessible debounce and request cancellation where applicable. Do not load a large JavaScript library for simple suggestions.
+
+## Testing
+
+Create test cases for:
+- Exact title matches
+- Content matches
+- Category and tag filtering
+- Common misspellings
+- Known synonyms
+- Empty and very long queries
+- Special characters
+- Non-English and Roman Urdu terms
+- No results
+- Pagination
+- Malicious-looking input
+
+Report which cases genuinely work, which require additional data, and which need a future advanced search service.

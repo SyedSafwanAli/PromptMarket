@@ -1,0 +1,67 @@
+# PHASE 04 — IMPLEMENT THE COMPLETE PROMPTATLAS FRONTEND
+
+Inspect the design system and current theme before making changes.
+
+Build the production-quality visual frontend for PromptAtlas using the existing WordPress theme. The website must look intentional and distinctive on desktop and mobile.
+
+## Homepage
+
+Create:
+1. Responsive site header with a text wordmark or a locally available logo
+2. Accessible primary navigation
+3. A clear editorial hero with a strong headline and short explanation
+4. A prominent search form
+5. Useful discovery categories
+6. A featured prompts section driven by WordPress content
+7. A recent prompts section driven by WordPress content
+8. Helpful explanatory content for first-time visitors
+9. A clear footer with About, Contact, Privacy Policy, and Terms links where those pages exist
+
+Do not fabricate prompt records, ratings, user counts, copy totals, reviews, or trending statistics. If no prompts exist, create a polished empty state that directs the site owner to publish content.
+
+## Page templates
+
+Implement or refine:
+- Homepage
+- Prompt archive/listing
+- Single prompt detail
+- Category archive
+- Tag archive
+- Search results
+- Standard content page
+- 404 page
+- Pagination where needed
+
+Use the WordPress template hierarchy and reusable template parts. Do not duplicate entire layouts across templates.
+
+## Prompt presentation
+
+Prompt listings should communicate the prompt title, a short real excerpt, relevant categories/tags, and clear actions where those actions actually work.
+
+Prompt detail pages should support a readable title, useful description, full prompt content, relevant metadata, and related content when available.
+
+Long prompts must wrap properly and be easy to read and copy. Avoid tiny text and excessive nested containers.
+
+## Search interface
+
+Create the visual search interface and its accessible states. If search functionality has not yet been implemented, use the existing WordPress search endpoint rather than displaying fake results.
+
+Provide:
+- Empty query state
+- Results state
+- No-results state
+- Keyboard focus state
+- Loading feedback only when an actual asynchronous operation is happening
+- Clear button labels and error messages
+
+## Quality requirements
+
+- Mobile-first responsive design
+- Semantic HTML
+- Accessible contrast and focus
+- Reduced-motion support
+- No decorative gradients, glassmorphism, neon effects, or excessive shadows
+- No unnecessary third-party dependencies
+- No fake loading delays or simulated features
+
+Verify the pages against actual WordPress content and test the templates with missing content, long titles, long prompts, empty categories, and no search results. Document any feature that is visually present but not yet functional.

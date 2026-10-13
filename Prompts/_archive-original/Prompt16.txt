@@ -1,0 +1,14 @@
+Create a lightweight, maintainable performance regression process for PromptAtlas.
+
+Establish repeatable checks for:
+- Theme CSS and JavaScript sizes
+- Unnecessary third-party requests
+- Homepage and prompt page loading
+- Image sizing and layout shifts
+- Repeated database queries where measurable
+- Mobile layout
+- Core Web Vitals where reliable measurement is available
+
+Set realistic budgets based on the actual baseline. Avoid brittle tests tied to exact machine-specific timings. Do not introduce heavy dependencies merely to measure a small theme.
+
+Document the test environment, baseline, budgets, and how the owner can repeat the checks after changes. Report measured results separately from estimates.

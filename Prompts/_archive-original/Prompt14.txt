@@ -1,0 +1,64 @@
+# PHASE 14 — PREPARE AND DEPLOY PROMPTATLAS
+
+Do not deploy anything or change production DNS until the owner has approved the target hosting and domain.
+
+## Step 1: Inspect the current site
+
+Document:
+- WordPress version
+- PHP compatibility
+- Theme dependencies
+- Database requirements
+- Installed plugins
+- Uploads and media
+- URL and permalink configuration
+- Required environment settings
+- Any local-only configuration
+
+## Step 2: Hosting recommendation
+
+Recommend a suitable WordPress hosting environment based on actual requirements, expected traffic, budget, backup needs, caching, and available support. Do not claim that a specific host is required without evidence.
+
+## Step 3: Deployment preparation
+
+Create a checklist for:
+- Full files and database backup
+- Staging environment
+- Production database configuration
+- Correct site URL
+- HTTPS certificate
+- Secure credentials
+- File permissions
+- Cache configuration
+- Email delivery if needed
+- Search engine visibility settings
+- Analytics and Search Console verification
+- AdSense configuration if approved
+- Error logging and backup schedule
+
+Never commit secrets or expose database credentials. Never copy local credentials into production.
+
+## Step 4: Migration safety
+
+Use a reliable WordPress migration process. Account for serialized data when replacing local URLs; do not use a naive global text replacement on the database.
+
+Preserve permalink structure, redirects, canonical URLs, media references, and SEO metadata.
+
+## Step 5: Launch verification
+
+After deployment and only when authorized, verify:
+- HTTPS works
+- No mixed-content errors
+- Homepage and all key templates load
+- Admin access works securely
+- Search and copy features work
+- Images and assets load
+- Sitemap and robots directives are correct
+- Search engine indexing is enabled intentionally
+- Backups and recovery procedures exist
+- No debug output or secrets are exposed
+- Performance is measured on the actual production URL
+
+## Final report
+
+Provide the actual deployment status, URL only if verified, test results, outstanding risks, rollback instructions, and post-launch maintenance plan. If credentials, hosting access, or approval are missing, prepare the deployment but do not pretend it has happened.

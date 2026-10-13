@@ -1,0 +1,42 @@
+# PHASE 11 — ADSENSE READINESS AND ANALYTICS
+
+Prepare PromptAtlas for responsible advertising and measurement. Do not assume that an AdSense account exists or that Google has approved the site.
+
+## Advertising requirements
+
+Create a clean, content-first layout with designated ad locations that:
+- Are clearly distinguishable from editorial content
+- Do not resemble prompt cards or navigation
+- Are not placed so close to copy buttons that accidental clicks are likely
+- Do not obstruct the main content
+- Reserve space where appropriate to reduce layout shifts
+- Remain responsive on mobile
+- Can be disabled while testing locally
+
+Do not insert live advertising scripts until the owner has the appropriate account configuration and is ready to test them.
+
+## Site policies
+
+Prepare useful, accurate drafts for:
+- About
+- Contact
+- Privacy Policy
+- Terms of Use
+
+Do not fabricate a business address, legal entity, email address, or privacy practices. Use clearly identified placeholders for information that the owner must supply.
+
+Explain whether a consent-management solution is required for the intended audience and advertising configuration. Do not claim legal compliance without reviewing the actual setup.
+
+## ads.txt and verification
+
+Support the correct ads.txt location if needed. Do not invent a publisher ID or copy example identifiers into a live configuration.
+
+Do not promise AdSense approval or revenue. Identify quality-content and policy requirements that remain the owner's responsibility.
+
+## Analytics
+
+Prepare integration points for Google Search Console and Google Analytics or an approved alternative. Avoid duplicate tags, unnecessary tracking, and exposing secrets. Explain which account-owned IDs need to be entered and where.
+
+## Verification
+
+Check ad slot behavior with ads disabled, page speed, mobile layout, CLS, privacy links, and indexation. Document which integrations are ready, which are placeholders, and which require real account credentials or approval.

@@ -1,0 +1,19 @@
+Plan a future creator/community system for PromptAtlas without implementing payments yet.
+
+Study the current architecture and propose a staged design for:
+- User registration and roles
+- Creator prompt submissions
+- Moderation and reporting
+- Ownership and editing permissions
+- Copy analytics
+- Abuse prevention
+- Privacy-conscious visitor recognition
+- Eligible-copy rules
+- Auditable earnings ledger
+- Withdrawal requests and administrative review
+
+Do not implement the system in this task. Identify data model changes, security risks, migration concerns, expected costs, and operational requirements.
+
+Assume the eventual earning concept may be PKR 5 per 50 eligible copies, but do not count repeated copies by the same recognized visitor as new eligible copies. IP address alone must not permanently disqualify visitors. Do not claim perfect lifetime visitor identification is possible.
+
+Produce a phased technical specification and wait for approval before implementation.

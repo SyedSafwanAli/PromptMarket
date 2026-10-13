@@ -1,0 +1,16 @@
+Perform a fresh, independent code review of the entire PromptAtlas project. Assume previous implementation work may contain mistakes.
+
+Inspect the current Git diff, theme architecture, WordPress APIs, PHP templates, security controls, accessibility, frontend performance, search behavior, SEO output, and maintainability.
+
+Prioritize:
+1. Critical security issues
+2. Data loss or broken content behavior
+3. PHP errors and broken templates
+4. Accessibility failures
+5. Performance regressions
+6. SEO conflicts
+7. Duplicated or unnecessary code
+
+Do not rewrite the entire project. List findings by severity, explain the evidence, and fix confirmed high-priority issues in small, reviewable changes. Run the relevant tests after each fix.
+
+Never fabricate test results. Update documentation and report all unresolved risks.

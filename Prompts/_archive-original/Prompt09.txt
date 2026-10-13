@@ -1,0 +1,70 @@
+# PHASE 09 — PERFORMANCE ENGINEERING AND SPEED AUDIT
+
+Read all project documentation. Measure before making major optimizations.
+
+## Goal
+
+Optimize PromptAtlas for fast rendering, responsiveness, and stable layouts without sacrificing accessibility, maintainability, or useful functionality.
+
+Target Core Web Vitals:
+- LCP at or below 2.5 seconds
+- INP at or below 200 milliseconds
+- CLS at or below 0.1
+
+Aim for approximately two-second loading under defined test conditions, but do not guarantee it across all devices and networks.
+
+## Audit
+
+Inspect:
+- PHP template behavior
+- Database queries
+- Asset sizes
+- CSS and JavaScript payloads
+- Render-blocking resources
+- Image dimensions and formats
+- Font loading
+- Third-party requests
+- Cache headers
+- Repeated database queries
+- Layout shifts
+- Unnecessary DOM complexity
+- Plugin overhead if measurable
+
+Record the baseline and the exact test conditions.
+
+## Optimization
+
+Implement only justified changes:
+- Remove unused code and unnecessary dependencies
+- Load assets only where needed
+- Defer or delay non-critical JavaScript when safe
+- Use efficient CSS
+- Add explicit image dimensions
+- Use responsive image sources
+- Lazy-load below-the-fold images
+- Do not lazy-load the primary LCP image if that worsens rendering
+- Avoid unnecessary font files and weights
+- Minimize layout shifts
+- Avoid expensive animations
+- Cache only where it is safe and compatible
+- Avoid database queries inside repeated loops
+- Use WordPress caching APIs or persistent caching only when appropriate
+- Preserve admin and personalized content behavior when implementing caching
+
+Do not disable security, accessibility, or core WordPress features merely to increase a score.
+
+## Animation quality
+
+Use transform and opacity for most transitions. Avoid animating width, height, top, left, or other layout-affecting properties without a compelling reason. Respect reduced-motion preferences.
+
+## Test conditions
+
+Separate local-development results from production-like results. If Lighthouse, browser automation, or PageSpeed Insights are unavailable, state the limitation and provide the next verification step.
+
+Report:
+- Baseline
+- Changes made
+- Measured outcome
+- Regressions checked
+- Remaining bottlenecks
+- Whether the target is met under the tested conditions

@@ -1,0 +1,65 @@
+# PHASE 05 — WORDPRESS PROMPT CONTENT ARCHITECTURE
+
+Inspect the current theme and WordPress installation.
+
+## Goal
+
+Make PromptAtlas content manageable from the WordPress admin without hardcoding prompts into the theme.
+
+## Prompt post type
+
+Implement a dedicated `prompt` custom post type if this is appropriate for the installed WordPress version and project architecture.
+
+Register it using WordPress APIs. Make it available in the admin and define sensible archive and rewrite behavior. Choose public visibility and REST API support deliberately.
+
+Use suitable taxonomies for:
+- Prompt categories
+- Prompt tags
+- Relevant AI tool or model, if supported by the content strategy
+
+Use native WordPress title, editor, excerpt, featured image, and publication status where practical.
+
+If additional metadata is needed, define its purpose, validation, sanitization, and output escaping. Avoid storing redundant data that WordPress already manages.
+
+## Editorial workflow
+
+The owner and team must be able to:
+- Create and edit a prompt
+- Preview before publishing
+- Save drafts
+- Schedule publication
+- Assign categories and tags
+- Add a clear description
+- Publish and update content safely
+
+Do not add public submissions, creator payouts, or complex accounts in this phase.
+
+## Frontend integration
+
+Connect the existing homepage, archive, single prompt, category, and search templates to real WordPress content.
+
+Use WordPress queries correctly, avoid N+1 query patterns, and paginate long listings. Do not load every prompt on one page.
+
+Ensure missing metadata does not break templates. Use fallbacks that are honest and meaningful rather than fabricated content.
+
+## SEO and URL stability
+
+Use clear prompt slugs and category URLs. Avoid duplicate archives and conflicting rewrite rules. Flush rewrite rules only when appropriate during registration or activation, not on every page request.
+
+Preserve existing WordPress content and URLs.
+
+## Tests
+
+Verify:
+- Prompt creation and publication
+- Draft and scheduled content
+- Archive rendering
+- Single prompt rendering
+- Categories and tags
+- Empty states
+- Pagination
+- Admin permissions
+- Escaping and sanitization
+- No PHP notices or fatal errors
+
+Document the final content model and any migration implications before continuing.

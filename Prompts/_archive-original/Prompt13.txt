@@ -1,0 +1,74 @@
+# PHASE 13 — COMPREHENSIVE QA AND REGRESSION TESTING
+
+Act as an independent QA engineer. Do not assume that features work because their code exists.
+
+Read the project documentation and build a test plan covering the actual implemented website.
+
+## Functional tests
+
+Test:
+- Homepage rendering
+- Prompt archive and detail pages
+- Categories and tags
+- Search and filters
+- Pagination
+- Copy button
+- Recently Copied
+- Saved prompts
+- Navigation
+- 404 page
+- Empty states
+- Admin prompt publishing
+- SEO metadata and canonical URLs
+- Responsive behavior
+- Keyboard navigation
+- Reduced-motion behavior
+
+## Edge cases
+
+Test:
+- No published prompts
+- Empty categories
+- Very long titles
+- Very long prompt content
+- Special characters and non-English text
+- Missing metadata
+- No search results
+- Invalid query parameters
+- Clipboard permission failures
+- Browser storage unavailable
+- Mobile overflow
+- Missing images
+- Broken links
+- Unauthorized state-changing requests
+
+## Technical checks
+
+Run available:
+- PHP syntax checks
+- WordPress coding standards checks if installed
+- JavaScript linting only if a real JS toolchain exists
+- Automated tests
+- Browser tests
+- Link checks
+- Lighthouse or equivalent performance audits
+
+Do not install a large test framework unless the project justifies it. Never say tests passed when they were skipped.
+
+## Fix and retest
+
+Fix confirmed bugs caused by the implementation. After each meaningful fix, re-run relevant tests. Check for regressions and avoid unrelated rewrites.
+
+## Deliverables
+
+Produce a concise QA report:
+- Tests passed
+- Tests failed
+- Tests not run and why
+- Bugs fixed
+- Remaining defects
+- Security concerns
+- Performance observations
+- Launch blockers
+
+Do not claim the site is production-ready if critical checks remain incomplete.

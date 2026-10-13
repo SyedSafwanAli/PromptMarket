@@ -1,0 +1,49 @@
+# PHASE 07 — COPY, RECENTLY COPIED AND SAVED PROMPTS
+
+Inspect the current prompt templates and search implementation.
+
+## Goal
+
+Implement reliable prompt copying and a practical way for visitors to return to prompts they used previously.
+
+## Copy button
+
+- Copy the actual prompt content, not its description or title.
+- Use the Clipboard API when available.
+- Handle unsupported clipboard access and permission errors gracefully.
+- Provide accessible feedback such as “Copied” and an announced status message.
+- Keep the control keyboard accessible.
+- Prevent duplicate event handlers and accidental double submissions.
+- Do not introduce fake loading delays.
+
+## Recently Copied
+
+After a successful copy, add the prompt to Recently Copied automatically.
+
+For guests, use a small, versioned browser storage structure only if appropriate. Store prompt IDs, timestamps, and minimal necessary information rather than duplicating large prompt bodies.
+
+Handle unavailable storage, corrupted data, stale IDs, private browsing restrictions, and a configurable history limit.
+
+If the visitor is logged in, evaluate whether server-side persistence is justified. Do not require account creation just to copy a prompt.
+
+## Saved prompts
+
+Allow visitors to save or unsave a prompt if this can be implemented securely and maintainably.
+
+For guest users, local storage may be sufficient. If logged-in support is implemented, enforce ownership checks on the server. Do not trust user-provided IDs without validating them.
+
+Provide clear states for:
+- Saved
+- Not saved
+- Copy succeeded
+- Copy failed
+- Empty Recently Copied list
+- Empty saved list
+
+## Privacy
+
+Do not silently collect unnecessary personal data or build invasive browser fingerprints. Explain any meaningful persistence behavior in the appropriate privacy documentation.
+
+## Testing
+
+Test repeated copies, storage unavailable, long prompt text, special characters, keyboard navigation, failed clipboard permission, stale prompt references, and mobile browsers. Verify that the feature remains usable if JavaScript fails or storage is unavailable, to the extent possible.

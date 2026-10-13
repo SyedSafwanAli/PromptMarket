@@ -1,0 +1,47 @@
+# PHASE 08 — TECHNICAL SEO AND INDEXATION
+
+Inspect the current WordPress configuration, theme, URLs, and content model before changing SEO behavior.
+
+## Goal
+
+Make PromptAtlas technically sound for organic discovery without producing low-quality or duplicate pages.
+
+## Requirements
+
+Implement or verify:
+- Descriptive page titles
+- Unique meta descriptions where appropriate
+- Canonical URLs
+- Correct HTTP status codes
+- XML sitemap generation
+- Robots.txt behavior
+- Logical headings
+- Internal links
+- Breadcrumbs where useful
+- Image alt text support
+- Clean permalink structures
+- Pagination behavior
+- Appropriate noindex rules for private or low-value pages
+- Search result page indexation policy
+- 404 handling
+- Redirect strategy for changed URLs
+
+Avoid duplicate SEO metadata. If an SEO plugin is selected, let it own the relevant metadata rather than outputting a second conflicting implementation from the theme.
+
+Do not hardcode sitemap URLs or canonical URLs in a way that breaks on staging or production domains.
+
+## Structured data
+
+Add structured data only when the visible content genuinely qualifies. Use an appropriate schema type, valid required properties, and no fabricated ratings or reviews. Validate output where tooling is available.
+
+## Content quality
+
+Create templates that help the team write unique, useful prompt descriptions. Do not mass-generate empty category pages or index arbitrary query combinations without value.
+
+## Search Console and analytics
+
+Prepare the site for Google Search Console and privacy-appropriate analytics. Do not invent verification codes or pretend accounts are connected. Explain exactly which user-owned property or verification token is still required.
+
+## Verification
+
+Inspect generated HTML, canonical URLs, titles, robots directives, sitemap output, internal links, and structured data. Document what is configured locally versus what must be completed after deployment.

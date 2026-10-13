@@ -1,0 +1,86 @@
+# PHASE 02 — BUILD THE PROMPTATLAS WORDPRESS THEME FOUNDATION
+
+Read the master instructions and current project documentation. Inspect the real WordPress installation before modifying files.
+
+## Goal
+
+Create a working, maintainable custom classic WordPress theme named PromptAtlas.
+
+## Requirements
+
+Use PHP templates, WordPress hooks, CSS, and minimal vanilla JavaScript. Do not add React, Next.js, a page builder, or a frontend build system unless a measured requirement justifies it.
+
+Create a clean theme structure with:
+- `style.css` with valid WordPress theme metadata
+- `functions.php`
+- `index.php`
+- `header.php`
+- `footer.php`
+- `front-page.php`
+- `page.php`
+- `single.php`
+- `archive.php`
+- `search.php` where useful
+- `404.php`
+- `assets/css/`
+- `assets/js/` only if needed
+- `template-parts/` for reusable UI fragments where useful
+- `languages/` if needed for translation support
+
+Do not create empty or duplicate templates without purpose. Follow the WordPress template hierarchy and ensure there is a functional fallback template.
+
+## Theme setup
+
+Implement appropriate support for:
+- `title-tag`
+- `post-thumbnails` where relevant
+- `html5`
+- `custom-logo` if the design needs it
+- `menus`
+- WordPress-generated body classes
+- Translation-ready strings with a consistent text domain
+
+Register menus through WordPress APIs. Enqueue CSS and JavaScript through WordPress hooks. Use file modification versions for local theme assets where appropriate without adding expensive work to every request.
+
+Use `wp_head()`, `wp_footer()`, `wp_body_open()`, `language_attributes()`, `body_class()`, and semantic document structure correctly.
+
+## Accessibility
+
+Implement:
+- A skip-to-content link
+- Semantic header, navigation, main, and footer landmarks
+- Logical heading order
+- Keyboard-visible focus styles
+- Accessible menu controls
+- Accessible names for icon-only controls
+- Sufficient color contrast
+- `prefers-reduced-motion` support
+- No interaction that depends on hover alone
+
+## Security
+
+Use correct escaping functions for output. Sanitize and validate any values accepted from requests. Do not create state-changing actions without appropriate permission checks and nonces. Never edit WordPress core files.
+
+## Performance
+
+Use a system font stack initially. Avoid remote font dependencies, third-party scripts, large images, and unnecessary JavaScript. Keep the theme assets small. Do not enqueue an asset if the theme does not use it.
+
+## Initial appearance
+
+Create a restrained but polished starter layout using the PromptAtlas palette:
+- #8B2626
+- #EF6905
+- #F1E5A1
+- #486C2F
+- #FCFAF6
+- Charcoal and neutral supporting colors
+
+Do not build the final homepage sections yet. Create only the reusable foundation, site header, main container, basic content presentation, and footer.
+
+## Verification
+
+Activate the theme in the local WordPress dashboard if your tools allow it. Otherwise explain the exact action needed.
+
+Check PHP syntax for every PHP file using the installed PHP executable if available. Inspect browser console errors if browser tools are available. Test desktop and mobile layouts.
+
+Update documentation and report changed files, test results, known limitations, and the next phase. Do not claim browser tests were run if no browser testing tool was available.

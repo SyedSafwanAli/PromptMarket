@@ -1,0 +1,56 @@
+# PHASE 10 — SECURITY AND ACCESSIBILITY REVIEW
+
+Perform a focused security and accessibility review of the complete current implementation.
+
+## Security review
+
+Inspect:
+- Output escaping
+- Input validation and sanitization
+- Nonce verification
+- Capability checks
+- Authentication and authorization
+- Custom REST endpoints
+- AJAX handlers
+- Database query safety
+- File uploads, if any
+- URL handling and redirects
+- Cross-site scripting risks
+- CSRF risks
+- Exposed secrets
+- Debug output
+- Error handling
+- Spam and abuse surfaces
+- Plugin and dependency risks
+
+Use WordPress APIs and established security patterns. Do not invent custom cryptography. Do not store passwords, API keys, or production secrets in the theme, Git, or browser JavaScript.
+
+Do not expose private information through public REST responses. Do not assume a nonce replaces an authorization check.
+
+## Accessibility review
+
+Check:
+- Keyboard navigation
+- Focus order and visible focus
+- Screen-reader labels
+- Heading hierarchy
+- Landmark structure
+- Form labels and errors
+- Contrast
+- Zoom and responsive reflow
+- Reduced motion
+- Dialogs and menus if present
+- Clipboard success/error announcements
+- Touch target usability
+
+Aim for WCAG 2.2 AA where practical. Do not claim formal compliance without adequate testing.
+
+## Fix policy
+
+Fix confirmed problems with the smallest maintainable changes. Do not rewrite unrelated code or add a heavy plugin without a clear reason.
+
+## Verification
+
+Run available static analysis, PHP syntax checks, unit/integration tests, and browser accessibility checks. If a tool is missing, report that fact and recommend the simplest suitable next step.
+
+Produce a prioritized report with severity, affected files, fixes, verification results, and remaining risks.
