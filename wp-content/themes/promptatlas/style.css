@@ -1,0 +1,31 @@
+/*
+Theme Name: PromptAtlas
+Theme URI: https://github.com/SyedSafwanAli/PromptMarket
+Author: PromptAtlas
+Author URI: https://github.com/SyedSafwanAli
+Description: A custom editorial theme for PromptAtlas, an AI prompt discovery platform. Classic PHP templates, no build step, minimal vanilla JavaScript, and a token-based design system with first-class dark mode.
+Version: 1.0.0
+Requires at least: 6.5
+Tested up to: 7.1
+Requires PHP: 8.0
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: promptatlas
+Tags: custom-menu, featured-images, translation-ready, accessibility-ready, block-styles, wide-blocks
+*/
+
+/*
+ * This file exists for the WordPress theme header above, which WordPress parses
+ * from style.css specifically and nowhere else.
+ *
+ * The actual styles are NOT here. They live in assets/css/, split by purpose and
+ * enqueued in inc/assets.php:
+ *
+ *   assets/css/tokens.css      design tokens, light and dark
+ *   assets/css/theme.css       reset, document, layout, header, footer
+ *   assets/css/components.css  reusable components (Phase 07)
+ *
+ * Keeping them separate makes the token layer reviewable on its own, which
+ * matters because dark mode depends on no component rule ever containing a
+ * colour literal.
+ */

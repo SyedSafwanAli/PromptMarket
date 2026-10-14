@@ -1,0 +1,611 @@
+/* =========================================================================
+   PromptAtlas — reset, document, layout, header, footer
+   Consumes tokens.css. No colour literal appears below this line.
+   ========================================================================= */
+
+/* -------------------------------------------------------------------------
+   1. RESET
+   Targeted, not a blanket reset. Only what actually causes problems.
+   ------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	text-size-adjust: 100%;
+	scroll-behavior: smooth;
+}
+
+body,
+h1, h2, h3, h4, h5, h6,
+p, figure, blockquote, dl, dd,
+ul, ol {
+	margin: 0;
+}
+
+ul[class],
+ol[class] {
+	list-style: none;
+	padding: 0;
+}
+
+img,
+picture,
+svg,
+video {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+	color: inherit;
+}
+
+button {
+	cursor: pointer;
+}
+
+/* -------------------------------------------------------------------------
+   2. DOCUMENT
+   ------------------------------------------------------------------------- */
+
+body {
+	margin: 0;
+	background-color: var(--color-bg);
+	color: var(--color-text);
+	font-family: var(--font-sans);
+	font-size: var(--text-md);
+	line-height: var(--leading-normal);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	/* The header and footer pin to the viewport edges on short pages. */
+	min-height: 100vh;
+}
+
+.site-wrap {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.site-main {
+	flex: 1 0 auto;
+	padding-block: var(--section-gap);
+}
+
+/* -------------------------------------------------------------------------
+   3. TYPOGRAPHY
+   ------------------------------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: var(--weight-semibold);
+	line-height: var(--leading-tight);
+	letter-spacing: var(--tracking-tight);
+	text-wrap: balance;
+}
+
+h1 { font-size: var(--text-3xl); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+h4 { font-size: var(--text-lg); }
+
+p {
+	text-wrap: pretty;
+}
+
+a {
+	color: var(--color-link);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.18em;
+	transition: color var(--duration-fast) var(--ease-out);
+}
+
+a:hover {
+	color: var(--color-link-hover);
+}
+
+strong, b {
+	font-weight: var(--weight-semibold);
+}
+
+code, kbd, samp, pre {
+	font-family: var(--font-mono);
+	font-size: 0.92em;
+}
+
+hr {
+	border: 0;
+	border-top: var(--border-width) solid var(--color-border);
+	margin-block: var(--space-xl);
+}
+
+/* -------------------------------------------------------------------------
+   4. FOCUS
+   One visible treatment everywhere. Never removed, only replaced.
+   :focus-visible keeps it off mouse clicks but always on for keyboard.
+   ------------------------------------------------------------------------- */
+
+:focus-visible {
+	outline: var(--focus-width) solid var(--focus-color);
+	outline-offset: var(--focus-offset);
+	border-radius: var(--radius-sm);
+}
+
+/* Older engines without :focus-visible still get a ring rather than nothing. */
+:focus:not(:focus-visible) {
+	outline: none;
+}
+
+/* -------------------------------------------------------------------------
+   5. ACCESSIBILITY HELPERS
+   ------------------------------------------------------------------------- */
+
+.screen-reader-text {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+.skip-link {
+	position: absolute;
+	top: var(--space-xs);
+	left: var(--space-xs);
+	z-index: var(--z-skiplink);
+	padding: var(--space-xs) var(--space-md);
+	background-color: var(--color-primary);
+	color: var(--color-on-primary);
+	font-weight: var(--weight-semibold);
+	text-decoration: none;
+	border-radius: var(--radius-md);
+	/* Moved off-screen rather than hidden, so it is reachable by Tab. */
+	transform: translateY(-200%);
+	transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.skip-link:focus {
+	transform: translateY(0);
+	color: var(--color-on-primary);
+}
+
+/* -------------------------------------------------------------------------
+   6. LAYOUT
+   ------------------------------------------------------------------------- */
+
+.container {
+	width: 100%;
+	max-width: var(--width-wide);
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+
+.prose {
+	max-width: var(--width-prose);
+}
+
+.prose > * + * {
+	margin-block-start: var(--space-md);
+}
+
+.prose h2 {
+	margin-block-start: var(--space-xl);
+}
+
+.prose h3 {
+	margin-block-start: var(--space-lg);
+}
+
+.prose ul,
+.prose ol {
+	padding-inline-start: var(--space-lg);
+}
+
+.prose li + li {
+	margin-block-start: var(--space-2xs);
+}
+
+.prose code {
+	padding: 0.1em 0.35em;
+	background-color: var(--color-surface-sunken);
+	border: var(--border-width) solid var(--color-border);
+	border-radius: var(--radius-sm);
+}
+
+.prose blockquote {
+	margin-inline: 0;
+	padding-inline-start: var(--space-md);
+	border-inline-start: 3px solid var(--color-primary);
+	color: var(--color-text-muted);
+}
+
+/* -------------------------------------------------------------------------
+   7. SITE HEADER
+   ------------------------------------------------------------------------- */
+
+.site-header {
+	border-block-end: var(--border-width) solid var(--color-border);
+	background-color: var(--color-bg);
+}
+
+.site-header__inner {
+	display: flex;
+	align-items: center;
+	gap: var(--space-md);
+	flex-wrap: wrap;
+	padding-block: var(--space-md);
+}
+
+.site-header__brand {
+	margin-inline-end: auto;
+}
+
+.site-title {
+	margin: 0;
+	font-size: var(--text-xl);
+	font-weight: var(--weight-bold);
+	letter-spacing: var(--tracking-tight);
+}
+
+.site-title a {
+	color: var(--color-primary);
+	text-decoration: none;
+}
+
+.site-title a:hover {
+	color: var(--color-primary-hover);
+}
+
+.custom-logo-link img {
+	max-height: 48px;
+	width: auto;
+}
+
+.site-nav__list {
+	display: flex;
+	align-items: center;
+	gap: var(--space-lg);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.site-nav__list a {
+	color: var(--color-text);
+	font-size: var(--text-base);
+	font-weight: var(--weight-medium);
+	text-decoration: none;
+	padding-block: var(--space-3xs);
+	border-block-end: 2px solid transparent;
+}
+
+.site-nav__list a:hover {
+	color: var(--color-primary);
+	border-block-end-color: var(--color-accent);
+}
+
+.site-nav__list .current-menu-item > a {
+	color: var(--color-primary);
+	border-block-end-color: var(--color-primary);
+}
+
+.site-header__actions {
+	display: flex;
+	align-items: center;
+	gap: var(--space-xs);
+}
+
+/* -------------------------------------------------------------------------
+   8. MOBILE MENU
+   A checkbox disclosure, so navigation works without JavaScript. The checkbox
+   is visually hidden but NOT display:none, which would remove it from the
+   accessibility tree and make it unreachable by keyboard.
+   ------------------------------------------------------------------------- */
+
+.menu-toggle__checkbox {
+	position: absolute;
+	opacity: 0;
+	width: 1px;
+	height: 1px;
+	pointer-events: none;
+}
+
+.menu-toggle {
+	display: none;
+	align-items: center;
+	gap: var(--space-2xs);
+	padding: var(--space-2xs) var(--space-sm);
+	border: var(--border-width) solid var(--color-border-control);
+	border-radius: var(--radius-md);
+	font-size: var(--text-sm);
+	font-weight: var(--weight-medium);
+	cursor: pointer;
+	user-select: none;
+}
+
+.menu-toggle__bars {
+	display: grid;
+	gap: 3px;
+}
+
+.menu-toggle__bars span {
+	display: block;
+	width: 16px;
+	height: 2px;
+	background-color: currentColor;
+}
+
+/* The checkbox is before the label and the nav in source order, so a sibling
+   selector can reflect its state onto both. */
+.menu-toggle__checkbox:focus-visible + .menu-toggle {
+	outline: var(--focus-width) solid var(--focus-color);
+	outline-offset: var(--focus-offset);
+}
+
+@media (max-width: 47.99em) {
+	.menu-toggle {
+		display: inline-flex;
+		order: 2;
+	}
+
+	.site-nav {
+		order: 4;
+		flex-basis: 100%;
+		display: none;
+	}
+
+	.menu-toggle__checkbox:checked ~ .site-nav {
+		display: block;
+	}
+
+	.site-nav__list {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0;
+		padding-block: var(--space-xs);
+	}
+
+	.site-nav__list li + li {
+		border-block-start: var(--border-width) solid var(--color-border);
+	}
+
+	.site-nav__list a {
+		display: block;
+		padding-block: var(--space-sm);
+		border-block-end: 0;
+	}
+
+	.site-header__actions {
+		order: 3;
+	}
+
+	.site-header__actions .search-form {
+		display: none;
+	}
+
+	.menu-toggle__checkbox:checked ~ .site-nav + .site-header__actions .search-form {
+		display: flex;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   9. SITE FOOTER
+   ------------------------------------------------------------------------- */
+
+.site-footer {
+	flex-shrink: 0;
+	margin-block-start: var(--section-gap);
+	padding-block: var(--space-xl);
+	border-block-start: var(--border-width) solid var(--color-border);
+	background-color: var(--color-surface-sunken);
+	color: var(--color-text-muted);
+	font-size: var(--text-sm);
+}
+
+.site-footer__inner {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-lg);
+	align-items: baseline;
+	justify-content: space-between;
+}
+
+.site-footer__name {
+	color: var(--color-text);
+	font-weight: var(--weight-semibold);
+}
+
+.site-footer__tagline {
+	margin-block-start: var(--space-3xs);
+	max-width: 36ch;
+}
+
+.site-footer__list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-md);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.site-footer__list a,
+.site-footer__legal a {
+	color: var(--color-text-muted);
+}
+
+.site-footer__legal {
+	margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+   10. PAGE AND SECTION HEADERS
+   ------------------------------------------------------------------------- */
+
+.page-header {
+	max-width: var(--width-prose);
+	margin-block-end: var(--space-xl);
+}
+
+.page-title {
+	margin-block-end: var(--space-xs);
+}
+
+.page-header__description,
+.page-header__meta {
+	color: var(--color-text-muted);
+}
+
+.page-header__search {
+	margin-block-start: var(--space-md);
+	max-width: 28rem;
+}
+
+.search-query {
+	color: var(--color-primary);
+}
+
+.section-header {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--space-md);
+	margin-block-end: var(--space-lg);
+	padding-block-end: var(--space-xs);
+	border-block-end: var(--border-width) solid var(--color-border);
+}
+
+.section-header__title {
+	font-size: var(--text-xl);
+	margin: 0;
+}
+
+.section-header__link {
+	font-size: var(--text-sm);
+	font-weight: var(--weight-medium);
+	white-space: nowrap;
+}
+
+.home-section + .home-section {
+	margin-block-start: var(--section-gap);
+}
+
+/* -------------------------------------------------------------------------
+   11. ENTRY (single post / page)
+   ------------------------------------------------------------------------- */
+
+.entry-header {
+	max-width: var(--width-prose);
+	margin-block-end: var(--space-lg);
+}
+
+.entry-title {
+	margin-block-end: var(--space-xs);
+}
+
+.entry-meta {
+	color: var(--color-text-muted);
+	font-size: var(--text-sm);
+}
+
+.entry-updated {
+	color: var(--color-success-text);
+}
+
+.entry-media {
+	margin-block-end: var(--space-xl);
+}
+
+.entry-media img {
+	width: 100%;
+	border-radius: var(--radius-lg);
+}
+
+/* -------------------------------------------------------------------------
+   12. HOMEPAGE INTRO
+   ------------------------------------------------------------------------- */
+
+.home-intro {
+	padding-block: var(--section-gap);
+	border-block-end: var(--border-width) solid var(--color-border);
+	background-color: var(--color-surface-sunken);
+}
+
+.home-intro__inner {
+	max-width: var(--width-prose);
+}
+
+.home-intro__title {
+	margin-block-end: var(--space-sm);
+}
+
+.home-intro__lead {
+	font-size: var(--text-lg);
+	color: var(--color-text-muted);
+	max-width: 46ch;
+}
+
+.home-intro__search {
+	margin-block-start: var(--space-lg);
+	max-width: 30rem;
+}
+
+/* The homepage supplies its own top spacing via .home-intro. */
+.home .site-main {
+	padding-block-start: 0;
+}
+
+/* -------------------------------------------------------------------------
+   13. REDUCED MOTION
+   Honour the preference globally rather than per-component, so nothing can be
+   missed. Durations go to ~0 instead of 0 because some browsers skip
+   transitionend entirely at exactly 0s.
+   ------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   14. PRINT
+   ------------------------------------------------------------------------- */
+
+@media print {
+	.site-header__actions,
+	.site-nav,
+	.menu-toggle,
+	.skip-link,
+	.pagination,
+	.site-footer__nav {
+		display: none !important;
+	}
+
+	body {
+		background: #fff;
+		color: #000;
+	}
+}
