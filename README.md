@@ -97,7 +97,7 @@ dedicated database user, install WordPress, then symlink or copy the theme and p
 ├── TESTING.md               Every check and how to run it
 ├── DEPLOYMENT.md            Environment facts and deployment
 ├── LAUNCH_CHECKLIST.md      Everything deferred to launch
-├── Prompts/                 The 25 phase instruction files (reference, not code)
+├── docs/                 The 25 phase instruction files (reference, not code)
 ├── tools/                   Development scripts
 ├── phpcs.xml.dist           Coding standards ruleset
 └── wp-content/

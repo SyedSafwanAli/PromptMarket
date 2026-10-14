@@ -32,8 +32,27 @@ Started: Phase 02, 2026-10-14.
       *Deferred by: Phase 02.*
 - [ ] Serve the site over HTTPS and confirm there is no mixed content.
 
+### Security of the deployed configuration
+
+- [ ] **Carry the `.htaccess` protection blocks into the production config.** `.htaccess` is *not*
+      tracked in Git (it hardcodes the local `RewriteBase`), so the protections added in Phase 05
+      will not travel with a deploy. Production must deny: the documentation set (`CLAUDE.md`,
+      `DECISIONS.md`, `PROGRESS.md`, `PROJECT_PLAN.md`, `CONTENT_STRATEGY.md`, `TESTING.md`,
+      `DEPLOYMENT.md`, `LAUNCH_CHECKLIST.md`, `README.md`), the tooling config (`composer.json`,
+      `composer.lock`, `phpcs.xml.dist`, `.editorconfig`, `.gitattributes`, `.gitignore`), and the
+      `docs/`, `tools/` and `vendor/` directories. Also set `Options -Indexes`.
+      *Deferred by: Phase 05, which found all of these publicly readable and returning 200.*
+      **Better still:** Phase 22 should not deploy these files at all — `.gitattributes` already
+      marks them `export-ignore`.
+- [ ] Verify after deploy: requesting `/CLAUDE.md`, `/DECISIONS.md` and `/docs/` returns 403 or
+      404, not 200.
+
 ### Content
 
+- [ ] **Test-run every published prompt against a real model.** `CONTENT_STRATEGY.md` 6.4 requires
+      it, and the two prompts created in Phase 05 (#6 and #7) are published locally **without
+      having been run**. Either test them and add real example output, or unpublish them.
+      *Deferred by: Phase 05.*
 - [ ] Delete the default WordPress sample content: the "Hello world!" post and the "Sample Page"
       page. *Deferred by: Phase 02 — left in place deliberately so nothing was deleted without
       approval.*

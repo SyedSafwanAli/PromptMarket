@@ -12,8 +12,10 @@ exact next step. Update it after every phase.
 | 01 — Project decisions | **Complete** | 2026-10-14 | `DECISIONS.md` + `PROJECT_PLAN.md`. Decisions 2, 3, 4, 6, 7, 8, 11 decided under owner delegation; 1, 5, 9, 10 pending with recommendations. |
 | 02 — Environment and local WordPress | **Complete** | 2026-10-14 | WordPress 7.1.3 installed and verified on XAMPP. |
 | 03 — Tooling, docs and version control | **Complete** | 2026-10-14 | Git boundary set, full doc set, PHPCS + WPCS installed and passing. |
-| 04 — Information architecture | **In progress** | — | — |
-| 05–25 | Not started | — | — |
+| 04 — Information architecture | **Complete** | 2026-10-14 | `CONTENT_STRATEGY.md`; taxonomy + URLs frozen as decisions 12 and 13. |
+| 05 — Content model | **Complete** | 2026-10-14 | `promptatlas-core` plugin: 2 post types, 3 taxonomies, 8 meta fields. All checks pass. |
+| 06 — Theme foundation | **In progress** | — | — |
+| 07–25 | Not started | — | — |
 
 > **Note on ordering.** Phase 02 ran before Phase 01 at the owner's instruction. Phase 01 was
 > then completed retroactively on 2026-10-14, and its decisions 3 and 6 confirmed the provisional
@@ -114,7 +116,7 @@ EMPTY_TRASH_DAYS    = 30
 | Theme directory identified | `wp-content/themes/promptatlas` created (empty; Phase 06 fills it) |
 | PHP error log | `wp-content/debug.log` does not exist — no PHP errors logged |
 | Apache error log | No WordPress-related errors |
-| Unrelated project files overwritten | **None.** `Prompts/` is untouched; other `htdocs` sites untouched |
+| Unrelated project files overwritten | **None.** `docs/` is untouched; other `htdocs` sites untouched |
 
 ---
 
@@ -280,7 +282,7 @@ project-authored code. Reasoning in `DECISIONS.md` decision 11.
 password and the WordPress salts, so before Phase 03 a single `git add -A && git push` would have
 published them. The `.gitignore` now excludes it, verified with `git check-ignore`.
 
-Tracked: the documentation set, `Prompts/`, `tools/`, `composer.json`, `composer.lock`,
+Tracked: the documentation set, `docs/`, `tools/`, `composer.json`, `composer.lock`,
 `phpcs.xml.dist`, `.editorconfig`, `.gitignore`, and (once they have files)
 `wp-content/themes/promptatlas/` and `wp-content/plugins/promptatlas-core/`.
 
@@ -341,11 +343,176 @@ plus `DECISIONS.md` and `PROJECT_PLAN.md` from Phase 01. `DEPLOYMENT.md`, `PROGR
 
 ---
 
+---
+
+## Phase 04 — Information architecture and content strategy
+
+Completed 2026-10-14. **Produced:** [`CONTENT_STRATEGY.md`](CONTENT_STRATEGY.md), plus decisions
+12 and 13 in `DECISIONS.md`, both **frozen**.
+
+### Research honesty
+
+Two web searches were run. **Every usable source was a vendor with a commercial interest, and no
+independently validated prompt-search volume data was found.** Consequently
+`CONTENT_STRATEGY.md` contains **no search volume figures at all** — the query-pattern analysis is
+labelled as general-knowledge pattern analysis, not data. Section 1.2 is to be rewritten from real
+Search Console data once Phase 18 provides 4–6 weeks of it.
+
+### Decided
+
+- **8 flat categories** — `writing-editing`, `marketing-content`, `business-strategy`,
+  `coding-development`, `career-job-search`, `education-study`, `image-video`,
+  `productivity-personal`. Eight divides 40–60 launch prompts into 5–8 each, so no category page
+  ships thin. Flat, because a hierarchy at this volume produces two-prompt leaf pages.
+- **3 taxonomies** — category (required, exactly one), tool (optional, indexable), tag (optional,
+  max 5, **noindex**).
+- **Collections as a post type**, not a taxonomy — they are the highest-traffic pages and need
+  editorial ordering plus 150+ words of original framing, neither of which a term description
+  gives. Cost: a mirrored reverse-index meta, implemented in Phase 05.
+- **Prefixed URLs** — `/prompts/<slug>/`, not category-nested, because recategorising a prompt
+  must not change its URL.
+- **Content model field list** — specified precisely enough that Phase 05 made no naming decisions.
+- **No ratings, review counts, copy counts, view counts or "trending" fields.** Each would have to
+  be fabricated at launch, which the content-integrity rule forbids outright.
+
+---
+
+## Phase 05 — Content model
+
+Completed 2026-10-14. **Produced:** the `promptatlas-core` plugin — 9 PHP files.
+
+### Where the code lives, and why
+
+**In a plugin, not the theme.** If the content model lived in the theme, switching themes would
+unregister the post types: the prompts would still be rows in the database but would become
+unreachable, their URLs would 404, and the admin menus would vanish. That is a data-integrity
+problem, not an inconvenience. Recorded as `DECISIONS.md` decision 11's practical consequence and
+in `CLAUDE.md` section 3, with the rule: *if deactivating the theme would lose data or break a
+URL, it belongs in the plugin.*
+
+### Files created
+
+| File | Purpose |
+|---|---|
+| `promptatlas-core.php` | Bootstrap, constants, activation/deactivation, one-time rewrite flush |
+| `includes/taxonomies.php` | The 3 taxonomies — registered at priority **5** |
+| `includes/post-types.php` | `prompt` and `collection` — registered at priority **6** |
+| `includes/meta.php` | 8 meta fields, sanitisers, accessors, token matching |
+| `includes/admin-meta-boxes.php` | Editor panels and the save handlers |
+| `includes/terms-seed.php` | Seeds the 8 categories and 8 tools on activation |
+| `includes/reserved-slugs.php` | Two-layer guard against route-shadowing slugs |
+| `includes/collection-sync.php` | Maintains the collection reverse index |
+| `includes/queries.php` | Related prompts, collection membership |
+
+### Three bugs found and fixed during verification
+
+**1. Taxonomy archives all returned 404.** The `prompt` post type generates an attachment
+catch-all rewrite rule, `prompts/[^/]+/([^/]+)/?$`, which matches *any* two segments under
+`/prompts/` — including `/prompts/category/career-job-search/`. Because the post type was
+registered first, that greedy rule sorted above the taxonomy rules, which sat unreachable below
+it. Confirmed by matching the URL against `rewrite_rules` in order and seeing it resolve to
+`index.php?attachment=$matches[1]`.
+
+Fixed by registering the taxonomies at priority 5, **before** the post types at 6, so their
+specific rules sort first. The ordering is load-bearing and is commented as such in the source, so
+a later phase does not "tidy" it. All three archives now return 200 with the correct titles.
+
+**2. The `Prompts/` folder shadowed the frozen `/prompts/` URL.** The phase-instruction library sat
+in the web root as `Prompts/`. Windows filesystems are case-insensitive, so Apache resolved
+`/prompts/` to that real directory and served a **directory listing** instead of passing the
+request to WordPress — `.htaccess`'s `RewriteCond %{REQUEST_FILENAME} !-d` deliberately skips
+rewriting when a directory exists.
+
+Fixed by renaming `Prompts/` → `docs/` with `git mv` (history preserved) and updating all 15
+references across 5 documents. Also added `Options -Indexes`, so no folder is ever browsable again.
+
+> This would have been invisible on a Linux production host, where `Prompts` and `prompts` are
+> different paths. It would then have appeared only on the next developer's Windows machine.
+
+**3. The reserved-slug guard did not work on drafts.** `wp_unique_post_slug()` returns early for
+draft, pending and auto-draft posts **before** applying its filter, so the guard never ran. A draft
+could hold the slug `category` and show a misleading permalink until publication. Added a second
+layer on `wp_insert_post_data`, which runs for every status. Verified: `category`, `prompts` and
+`about` are all suffixed correctly as both draft and published.
+
+### Also found: internal documentation was publicly readable
+
+Not a Phase 05 bug, but discovered while fixing #2 and worth recording. Because the Git repository
+root is the web root (decision 11), every tracked file was web-reachable: `/CLAUDE.md`,
+`/DECISIONS.md`, `/composer.json` and the whole phase library all returned **200**. On production
+that publishes the content strategy, the decision record and the tooling configuration.
+
+`.htaccess` now denies the documentation set, the tooling config, `docs/`, `tools/`, `vendor/` and
+`debug.log`. Verified: all return **403**. **`.htaccess` is not tracked in Git**, so these blocks
+must be carried into the production config — added to `LAUNCH_CHECKLIST.md`.
+
+### Verification — actually run
+
+A 11-section verification script was executed via `wp eval-file`. **38 of 39 assertions passed on
+the first run**; the one failure was bug #3 above, which was then fixed and re-verified.
+
+| Area | Result |
+|---|---|
+| Angle brackets survive sanitisation | **PASS** — `<strong>`, `List<String>` and `<your name here>` all preserved |
+| Proof the custom sanitiser is necessary | **PASS** — `sanitize_textarea_field()` destroys all three, producing `Use List for the type.` |
+| Sanitiser hygiene | **PASS** — null bytes stripped, CRLF→LF, blank lines collapsed, trimmed, non-scalar → `''` |
+| Variable normalisation | **PASS** — `job title` → `JOB_TITLE`, `weird!!name##` → `WEIRD_NAME`, nameless rows dropped, capped at 12 |
+| Token/variable mismatch detection | **PASS** — no undeclared or unused on either real prompt |
+| Related-ID validation | **PASS** — rejects non-existent IDs, a page ID, duplicates; caps at 3; parses comma strings |
+| **Subscriber cannot write prompt meta** | **PASS** — `auth_callback` returns false |
+| **Administrator can** | **PASS** |
+| **Save handler ignores POST with no nonce** | **PASS** — meta unchanged |
+| **Save handler ignores POST with an invalid nonce** | **PASS** — meta unchanged |
+| Programmatic save does not wipe meta | **PASS** — `wp_update_post` with empty `$_POST` leaves meta intact |
+| Reserved slug guard, draft and published | **PASS** (after fix) |
+| Collection reverse index | **PASS** — adds, **clears stale rows on removal**, preserves editorial order `[7,6]`, clears on delete |
+| Post types and taxonomies registered | **PASS** |
+| Related-prompts query | **PASS** — returns an array, never includes itself |
+
+URL resolution, by HTTP request:
+
+| URL | Code | Title |
+|---|---|---|
+| `/prompts/` | 200 | `Prompts – PromptAtlas` |
+| `/prompts/<slug>/` ×2 | 200 | correct, UTF-8 title intact (`résumé`) |
+| `/prompts/category/career-job-search/` | 200 | `Career & Job Search – PromptAtlas` |
+| `/prompts/tool/chatgpt/` | 200 | `ChatGPT – PromptAtlas` |
+| `/prompts/tag/resume/` | 200 | `resume – PromptAtlas` |
+| `/collections/` | 200 | `Collections – PromptAtlas` |
+
+The prompt archive genuinely lists both prompts (slug matches found in the HTML).
+
+**`wp-content/debug.log` does not exist** — with `WP_DEBUG` on, no notice, warning or error was
+emitted throughout. `composer check` passes: 10 files, 0 syntax errors, 0 PHPCS errors, 0 warnings.
+
+### The two draft prompts
+
+Phase 05 requires real content to exercise the model. Two genuine, originally written prompts were
+created — *Rewrite a résumé for a specific job description* (#6) and *Explain unfamiliar code line
+by line* (#7) — each with the full four-part explanation, real placeholder variables, category,
+tools and tags.
+
+**Example output was deliberately left empty on both.** `CONTENT_STRATEGY.md` 6.4 requires a prompt
+to be run in a real tool before its output is shown, and I have not run these. An empty field is
+honest; an invented example is not.
+
+> **These two prompts are published locally but have NOT been test-run against a live model.** The
+> site is `blog_public = 0` on localhost, so nothing is public. Added to `LAUNCH_CHECKLIST.md`:
+> every prompt must be test-run before launch.
+
+### Not yet tested
+
+- **Theme-switch survival was verified by construction, not by switching.** Registration is in the
+  plugin, and the post types and all 2 published prompts are intact under the active theme — but
+  only one theme is installed, so no actual switch has happened. **Phase 06 will perform the real
+  switch test** once the `promptatlas` theme exists.
+- **The admin editing UI has not been clicked through by hand.** The save handlers were tested
+  directly, including both nonce-rejection paths, but nobody has used the meta box in a browser.
+  Worth doing when the owner first writes a prompt.
+
+---
+
 ## Exact next step
 
-**Phase 04 — Information architecture and content strategy**
-(`Prompts/04-information-architecture.md`).
-
-Phase 04 fills `CONTENT_STRATEGY.md` and must settle the URL structure, taxonomy, and the prompt
-page field list — because **Phase 05 registers exactly that field list as post meta** and cannot
-start without it.
+**Phase 06 — Theme foundation** (`docs/06-theme-foundation.md`), then Phase 07 (design system) and
+Phase 08 (templates). Phase 06 must also run the deferred theme-switch test from Phase 05.

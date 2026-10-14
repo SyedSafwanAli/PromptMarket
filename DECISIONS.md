@@ -300,15 +300,15 @@ worse outcome than 60 genuinely useful ones, and the content-integrity rule outr
 only project-authored code is tracked. WordPress core is ignored.**
 
 Tracked: `wp-content/themes/promptatlas/`, `wp-content/plugins/promptatlas-core/`, the
-documentation set, `Prompts/`, `.gitignore`.
+documentation set, `docs/`, `.gitignore`.
 
 Ignored: all WordPress core files and directories, `wp-config.php`, `wp-content/uploads/`,
 third-party themes and plugins, logs, caches, and database dumps.
 
 Reasoning:
 
-- The repository root was already here with `Prompts/` committed, and the WordPress install was
-  placed around it in Phase 02. Moving the boundary now would either orphan `Prompts/` or require
+- The repository root was already here with `docs/` committed, and the WordPress install was
+  placed around it in Phase 02. Moving the boundary now would either orphan `docs/` or require
   rewriting history.
 - A root-level repository with core ignored gives one VS Code workspace containing everything
   that is actually edited, while keeping ~2,000 core files out of every diff.
@@ -319,11 +319,95 @@ Reasoning:
 **Alternatives rejected:**
 
 - *Repository at the theme directory only* — cannot track `promptatlas-core`, and strands the
-  existing `Prompts/` library and the documentation set.
-- *Repository at `wp-content/`* — cleaner in theory, but `Prompts/` and the docs sit above it, and
+  existing `docs/` library and the documentation set.
+- *Repository at `wp-content/`* — cleaner in theory, but `docs/` and the docs sit above it, and
   it would mean re-initialising the existing repository for no real gain.
 - *Tracking WordPress core* — bloats the repository, buries real changes in core diffs on every
   update, and offers nothing that `wp core verify-checksums` does not already do better.
+
+---
+
+## 12. Taxonomy — **FROZEN** · 2026-10-14 · *Phase 04*
+
+**Decision: two post types and three taxonomies. Full specification in
+[`CONTENT_STRATEGY.md`](CONTENT_STRATEGY.md) sections 3.1–3.5.**
+
+| Post type | Slug |
+|---|---|
+| `prompt` | `prompts` |
+| `collection` | `collections` |
+
+| Taxonomy | Slug | Shape | Archive indexable |
+|---|---|---|---|
+| `prompt_category` | `category` | **Flat**, required, exactly one per prompt | Yes |
+| `prompt_tool` | `tool` | Flat, optional, multiple | Yes |
+| `prompt_tag` | `tag` | Flat, optional, max 5 | **No** — `noindex, follow` |
+
+**Eight categories, final:** `writing-editing`, `marketing-content`, `business-strategy`,
+`coding-development`, `career-job-search`, `education-study`, `image-video`,
+`productivity-personal`.
+
+Reasoning:
+
+- **Flat, not hierarchical.** With 40–60 prompts at launch (decision 10), a two-level hierarchy
+  produces leaf categories holding two prompts each, and a two-prompt category page is a thin
+  page — a ranking and AdSense liability. A flat taxonomy can be made hierarchical later without
+  breaking term URLs; flattening a hierarchy *does* break them.
+- **Eight categories** divides 40–60 prompts into 5–8 each, so no category page ships thin. A new
+  category needs a recorded decision and 5 prompts ready for it.
+- **A separate tool taxonomy is justified** because "midjourney prompts" is a genuinely distinct
+  query shape, and an image-model prompt does not transfer to a text model. Terms name a product
+  family, never a version (`ChatGPT`, not `GPT-5.2`), and need 3 published prompts to exist.
+- **Tag archives are `noindex, follow`** — they exist to pass internal link equity and help a
+  human browse, not to rank. This is what makes a 3-prompt minimum tolerable rather than a thin-page
+  problem.
+- **Collections are a post type, not a taxonomy.** They are the highest-traffic pages on a prompt
+  site, and they need editorial ordering plus 150+ words of original framing. A taxonomy term
+  description cannot deliver either. Rejected alternatives and the cost of this choice — a
+  mirrored reverse-lookup meta — are recorded in `CONTENT_STRATEGY.md` 5.2.
+
+**Alternatives rejected:** hierarchical categories (thin leaf pages at this content volume);
+20+ categories (same problem, worse); no tool taxonomy (forfeits a real query pattern);
+indexable tag archives (manufactures thin pages); collections as a taxonomy or as ordinary Pages.
+
+---
+
+## 13. URL architecture — **FROZEN** · 2026-10-14 · *Phase 04*
+
+**Decision: a prefixed structure. Full table in `CONTENT_STRATEGY.md` 3.6.**
+
+| Content | URL |
+|---|---|
+| Single prompt | `/prompts/<slug>/` |
+| Prompt archive | `/prompts/` |
+| Category archive | `/prompts/category/<slug>/` |
+| Tool archive | `/prompts/tool/<slug>/` |
+| Tag archive | `/prompts/tag/<slug>/` *(noindex)* |
+| Single collection | `/collections/<slug>/` |
+| Collection archive | `/collections/` |
+| Search | `/?s=<query>` *(noindex)* |
+| Pages | `/<slug>/` |
+
+Reasoning:
+
+- **Rejected flat (`/<slug>/`)** — collides with the page namespace. A prompt and a page with
+  similar titles compete for one URL and WordPress resolves it unpredictably.
+- **Rejected category-nested (`/<category>/<slug>/`)** — recategorising a prompt would change its
+  URL. Refining categories is normal editorial work and must not cost a redirect and lost ranking
+  every time.
+- **Prefixed** gives a clean archive, an unambiguous namespace, and URLs that survive
+  recategorisation, for the price of one path segment.
+- Author and date archives are disabled: on a single-author site they generate duplicate thin
+  pages. Phase 12 implements this.
+
+**Reserved slugs**, enforced on save in Phase 05, because any of them as a post slug would shadow
+a route: `prompts`, `collections`, `category`, `tag`, `tool`, `page`, `search`, `feed`,
+`wp-admin`, `wp-content`, `wp-includes`, `about`, `contact`, `privacy`, `privacy-policy`,
+`terms`, `dmca`, `llms`, `robots`, `sitemap`.
+
+> **These URLs are frozen.** Changing one after launch requires a written redirect plan: 301s from
+> every old URL, a regenerated sitemap, and a Search Console re-submission. A casual slug change
+> costs ranking and breaks every inbound link and bookmark.
 
 ---
 
@@ -332,3 +416,4 @@ Reasoning:
 | Date | Change |
 |---|---|
 | 2026-10-14 | File created. Decisions 2, 3, 4, 6, 7, 8 and 11 decided under owner delegation. Decisions 1, 5, 9, 10 recorded as pending with recommendations. Phase 02's provisional settings (locale `en_US`, comments closed, timezone `Asia/Karachi`) are now confirmed by decisions 3 and 6; the placeholder tagline remains Phase 04's to replace. |
+| 2026-10-14 | Phase 04 added decisions 12 (taxonomy) and 13 (URL architecture), both **frozen**. Full specification in `CONTENT_STRATEGY.md`. |

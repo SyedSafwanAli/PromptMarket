@@ -2,7 +2,7 @@
 
 **Read this first in every session.** Then read `PROGRESS.md` (where the work actually stands),
 `DECISIONS.md` (what is already locked in) and the phase file you are about to run from
-`Prompts/`.
+`docs/`.
 
 ---
 
@@ -11,7 +11,7 @@
 **PromptAtlas** — an AI prompt discovery platform on WordPress. Visitors find, search, copy and
 save useful AI prompts. Only the owner and team publish at launch.
 
-The build follows a fixed 25-phase sequence in [`Prompts/`](Prompts/). Phases have prerequisites
+The build follows a fixed 25-phase sequence in [`docs/`](docs/). Phases have prerequisites
 and produce wrong work when run out of order. Finish the current phase, report, and stop — do not
 roll into the next phase because it seems convenient.
 
@@ -225,7 +225,7 @@ Reasoning in `DECISIONS.md` decision 11.
 | `TESTING.md` | Every check available and how to run it |
 | `DEPLOYMENT.md` | Environment facts, local setup, deployment (Phase 22) |
 | `LAUNCH_CHECKLIST.md` | Everything deferred to launch — **add to it whenever a phase defers something** |
-| `Prompts/` | The 25 phase instruction files. Reference only; not code |
+| `docs/` | The 25 phase instruction files. Reference only; not code |
 
 **Update `PROGRESS.md` and `DECISIONS.md` at the end of every phase.** A phase is not complete
 until they reflect reality.

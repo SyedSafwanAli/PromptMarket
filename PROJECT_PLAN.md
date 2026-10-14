@@ -7,7 +7,7 @@ save useful AI prompts. Only the owner and team publish at launch.
 (`promptatlas-core`). PHP templates, WordPress hooks and APIs, CSS, minimal JavaScript. No React,
 no headless, no build framework, no external search service.
 
-Phase source files live in [`Prompts/`](Prompts/). Decisions live in [`DECISIONS.md`](DECISIONS.md).
+Phase source files live in [`docs/`](docs/). Decisions live in [`DECISIONS.md`](DECISIONS.md).
 Running status lives in [`PROGRESS.md`](PROGRESS.md).
 
 ---

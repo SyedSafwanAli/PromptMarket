@@ -58,6 +58,19 @@
 	</rule>
 	<rule ref="WordPress.Security.ValidatedSanitizedInput">
 		<type>error</type>
+		<properties>
+			<!-- Project sanitisers. PHPCS cannot know these sanitise, so they are
+			     declared here; otherwise every use reads as unsanitised input.
+			     Each is defined in promptatlas-core/includes/meta.php and is
+			     also wired as a registered sanitize_callback, so every write
+			     path goes through the same code. -->
+			<property name="customSanitizingFunctions" type="array">
+				<element value="promptatlas_sanitize_multiline_text"/>
+				<element value="promptatlas_sanitize_variables"/>
+				<element value="promptatlas_sanitize_related_ids"/>
+				<element value="promptatlas_sanitize_collection_prompts"/>
+			</property>
+		</properties>
 	</rule>
 	<rule ref="WordPress.DB.PreparedSQL">
 		<type>error</type>
