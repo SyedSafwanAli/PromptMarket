@@ -41,6 +41,10 @@ require_once PROMPTATLAS_CORE_DIR . 'includes/terms-seed.php';
 require_once PROMPTATLAS_CORE_DIR . 'includes/collection-sync.php';
 require_once PROMPTATLAS_CORE_DIR . 'includes/admin-meta-boxes.php';
 require_once PROMPTATLAS_CORE_DIR . 'includes/queries.php';
+require_once PROMPTATLAS_CORE_DIR . 'includes/search-index.php';
+require_once PROMPTATLAS_CORE_DIR . 'includes/search-aliases.php';
+require_once PROMPTATLAS_CORE_DIR . 'includes/search.php';
+require_once PROMPTATLAS_CORE_DIR . 'includes/search-log.php';
 
 /**
  * Load the plugin text domain.
@@ -72,6 +76,16 @@ function promptatlas_activate() {
 	promptatlas_register_taxonomies();
 	promptatlas_seed_terms();
 
+	promptatlas_rebuild_all_search_blobs();
+	promptatlas_create_search_log_table();
+	promptatlas_schedule_search_log_prune();
+
+	// Seed the alias list only on a first install, so an owner who has edited
+	// it does not have their edits overwritten on reactivation.
+	if ( false === get_option( PROMPTATLAS_OPTION_ALIASES, false ) ) {
+		add_option( PROMPTATLAS_OPTION_ALIASES, promptatlas_default_aliases() );
+	}
+
 	flush_rewrite_rules();
 
 	update_option( 'promptatlas_core_version', PROMPTATLAS_CORE_VERSION );
@@ -88,6 +102,8 @@ register_activation_hook( __FILE__, 'promptatlas_activate' );
  * @return void
  */
 function promptatlas_deactivate() {
+	promptatlas_unschedule_search_log_prune();
+
 	flush_rewrite_rules();
 }
 register_deactivation_hook( __FILE__, 'promptatlas_deactivate' );

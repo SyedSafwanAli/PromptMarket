@@ -962,3 +962,59 @@ a.term-pill:hover {
 	color: var(--color-text-muted);
 	font-size: var(--text-sm);
 }
+
+/* -------------------------------------------------------------------------
+   21. SEARCH RESULTS (Phase 09)
+   A ranked list, not a card grid. Search results have an order that means
+   something, and a grid hides that.
+   ------------------------------------------------------------------------- */
+
+.search-scope {
+	margin-block-start: var(--space-sm);
+	color: var(--color-text-faint);
+	font-size: var(--text-sm);
+	max-width: 60ch;
+}
+
+.search-results {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	max-width: var(--width-content);
+	border-block-start: var(--border-width) solid var(--color-border);
+}
+
+.search-results__item {
+	padding-block: var(--space-md);
+	border-block-end: var(--border-width) solid var(--color-border);
+}
+
+.search-results__meta {
+	margin-block-end: var(--space-3xs);
+	font-size: var(--text-xs);
+	font-weight: var(--weight-semibold);
+	letter-spacing: var(--tracking-wide);
+	text-transform: uppercase;
+}
+
+.search-results__title {
+	font-size: var(--text-lg);
+	margin: 0;
+}
+
+.search-results__title a {
+	color: var(--color-text);
+	text-decoration: none;
+}
+
+.search-results__title a:hover {
+	color: var(--color-primary);
+	text-decoration: underline;
+}
+
+.search-results__snippet {
+	margin-block-start: var(--space-3xs);
+	color: var(--color-text-muted);
+	font-size: var(--text-sm);
+	max-width: 70ch;
+}
