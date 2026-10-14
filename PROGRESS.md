@@ -17,8 +17,13 @@ exact next step. Update it after every phase.
 | 06 — Theme foundation | **Complete** | 2026-10-14 | Custom theme active. Dark mode mechanism established. |
 | 07 — Design system | **Complete** | 2026-10-14 | Tokens, components, brand assets, measured contrast. `/style-reference/`. |
 | 08 — Frontend templates | **Complete** | 2026-10-14 | All public templates rendering real content. 9 edge cases tested. |
-| 09 — Search and discovery | Not started | — | **Next.** |
-| 10–25 | Not started | — | — |
+| 09 — Search and discovery | **Complete** | 2026-10-14 | Aliases, Roman Urdu input, plain-text index, zero-result log. |
+| 10 — Copy / Recent / Saved | **Complete** | 2026-10-14 | Client-side, versioned schema, REST lookup for stale IDs. |
+| 11 — Collections and hubs | **Complete** | 2026-10-14 | Per-entry notes, hub linking, route regression check added. |
+| 12 — Technical SEO | **Complete** | 2026-10-14 | Meta, OG, structured data, sitemap, robots + llms.txt. |
+| 13 — Contact and newsletter | **Complete** | 2026-10-14 | Custom form, double opt-in. **Email delivery unverified.** |
+| 14 — Roles and operations | Not started | — | **Next.** |
+| 15–25 | Not started | — | — |
 
 > **Note on ordering.** Phase 02 ran before Phase 01 at the owner's instruction. Phase 01 was
 > then completed retroactively on 2026-10-14, and its decisions 3 and 6 confirmed the provisional

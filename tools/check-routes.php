@@ -50,6 +50,7 @@ $promptatlas_routes = array(
 	'prompts/tag/resume/'                 => 'prompt_tag=',
 	'collections/'                        => 'post_type=collection',
 	'collections/some-collection/'        => 'collection=',
+	'llms.txt'                            => 'promptatlas_llms=1',
 );
 
 $promptatlas_rules = get_option( 'rewrite_rules' );

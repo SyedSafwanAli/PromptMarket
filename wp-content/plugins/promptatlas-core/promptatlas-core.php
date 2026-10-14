@@ -94,6 +94,16 @@ function promptatlas_activate() {
 	 */
 	promptatlas_register_taxonomies();
 	promptatlas_register_post_types();
+
+	/*
+	 * The /llms.txt route must be registered here too, for the same reason as
+	 * the types above: flush_rewrite_rules() below writes whatever is currently
+	 * registered, and anything added only on `init` may not be present during
+	 * activation. Without this the route silently vanished after a
+	 * reactivation and /llms.txt started returning 404.
+	 */
+	promptatlas_add_llms_route();
+
 	promptatlas_seed_terms();
 
 	promptatlas_rebuild_all_search_blobs();

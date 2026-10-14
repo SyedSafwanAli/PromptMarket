@@ -79,11 +79,11 @@ Update this table as you complete each phase.
 | 06 | Complete | 2026-10-14 | Custom theme active; dark mode mechanism established. |
 | 07 | Complete | 2026-10-14 | Tokens, components, brand assets, measured contrast. /style-reference/. |
 | 08 | Complete | 2026-10-14 | All public templates on real content. 9 edge cases tested. |
-| 09 | Not started | | |
-| 10 | Not started | | |
-| 11 | Not started | | |
-| 12 | Not started | | |
-| 13 | Not started | | |
+| 09 | Complete | 2026-10-14 | Aliases + Roman Urdu input, plain-text index, zero-result log. |
+| 10 | Complete | 2026-10-14 | Client-side store, versioned schema, REST lookup for stale IDs. |
+| 11 | Complete | 2026-10-14 | Per-entry notes, hub linking, route regression check. |
+| 12 | Complete | 2026-10-14 | Meta, OG, structured data, sitemap, robots + llms.txt. |
+| 13 | Complete | 2026-10-14 | Custom contact form + double opt-in. Email delivery unverified. |
 | 14 | Not started | | |
 | 15 | Not started | | |
 | 16 | Not started | | |
