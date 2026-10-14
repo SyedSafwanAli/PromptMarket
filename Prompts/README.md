@@ -71,9 +71,9 @@ Update this table as you complete each phase.
 
 | Phase | Status | Date | Notes |
 |---|---|---|---|
-| 01 | Not started | | |
-| 02 | Not started | | |
-| 03 | Not started | | |
+| 01 | Complete | 2026-10-14 | DECISIONS.md + PROJECT_PLAN.md. Items 1, 5, 9, 10 pending with owner. |
+| 02 | Complete | 2026-10-14 | WordPress 7.1.3 on XAMPP, verified. Run before Phase 01 — see PROGRESS.md "Phase 01 debt". |
+| 03 | Complete | 2026-10-14 | Git boundary, full doc set, PHPCS + WPCS passing. |
 | 04 | Not started | | |
 | 05 | Not started | | |
 | 06 | Not started | | |

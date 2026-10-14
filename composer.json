@@ -1,0 +1,29 @@
+{
+	"name": "promptatlas/promptatlas",
+	"description": "PromptAtlas — development tooling only. The site itself has no Composer runtime dependencies.",
+	"type": "project",
+	"license": "proprietary",
+	"require": {},
+	"require-dev": {
+		"squizlabs/php_codesniffer": "^3.9",
+		"wp-coding-standards/wpcs": "^3.1",
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+	},
+	"scripts": {
+		"lint": "php tools/lint-php.php",
+		"cs": "phpcs",
+		"cs:fix": "phpcbf",
+		"check": [
+			"@lint",
+			"@cs"
+		]
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		},
+		"optimize-autoloader": true,
+		"sort-packages": true
+	}
+}

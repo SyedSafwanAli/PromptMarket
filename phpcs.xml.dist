@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<ruleset name="PromptAtlas">
+
+	<description>Coding standards for the PromptAtlas theme and site plugin.</description>
+
+	<!-- ===================================================================
+	     What to scan. Only project-authored code: never WordPress core,
+	     never third-party themes or plugins, never Composer dependencies.
+	     =================================================================== -->
+	<file>wp-content/themes/promptatlas</file>
+	<file>wp-content/plugins/promptatlas-core</file>
+	<file>tools</file>
+
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/wp-admin/*</exclude-pattern>
+	<exclude-pattern>*/wp-includes/*</exclude-pattern>
+	<exclude-pattern>*/assets/dist/*</exclude-pattern>
+	<exclude-pattern>*.min.js</exclude-pattern>
+	<exclude-pattern>*.min.css</exclude-pattern>
+
+	<!-- ===================================================================
+	     How to run.
+	     =================================================================== -->
+	<arg name="extensions" value="php"/>
+	<arg name="basepath" value="."/>
+	<arg name="colors"/>
+	<arg name="parallel" value="8"/>
+	<arg value="sp"/><!-- show sniff codes and progress -->
+	<arg name="cache" value=".phpcs-cache"/>
+
+	<!-- ===================================================================
+	     The WordPress standard. This is the whole point of the file.
+	     =================================================================== -->
+	<rule ref="WordPress">
+		<!-- The theme is a classic PHP-template theme, so file names follow the
+		     WordPress template hierarchy (single-prompt.php, archive-prompt.php).
+		     WPCS wants class-*.php naming, which would break the hierarchy. -->
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+	</rule>
+
+	<!-- Escaping, nonces, sanitisation and prepared queries are NOT optional
+	     on this project. Promote them from warning to error so a security
+	     regression fails the check rather than scrolling past.
+
+	     `tools/` is excluded from the runtime sniffs below, and only from these.
+	     Those scripts are standalone command-line utilities that never load
+	     WordPress: they write to stdout, not to a browser, so `esc_html()` does
+	     not apply, and their top-level variables are script locals rather than
+	     WordPress globals. Everything that actually serves a request — the theme
+	     and the plugin — is held to the full standard with no exclusions. -->
+	<rule ref="WordPress.Security.EscapeOutput">
+		<type>error</type>
+		<exclude-pattern>tools/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.Security.NonceVerification">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.Security.ValidatedSanitizedInput">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.DB.PreparedSQL">
+		<type>error</type>
+	</rule>
+	<rule ref="WordPress.DB.PreparedSQLPlaceholders">
+		<type>error</type>
+	</rule>
+
+	<!-- Command-line utilities: exempt from WordPress-runtime-only conventions. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<exclude-pattern>tools/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions">
+		<exclude-pattern>tools/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions">
+		<exclude-pattern>tools/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.PHP.DevelopmentFunctions">
+		<exclude-pattern>tools/*</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.WP.GlobalVariablesOverride">
+		<exclude-pattern>tools/*</exclude-pattern>
+	</rule>
+
+	<!-- ===================================================================
+	     Project configuration.
+	     =================================================================== -->
+
+	<!-- Translation-ready code, per DECISIONS.md decision 3. Every output
+	     string must use this text domain. -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="promptatlas"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Everything global must be namespaced to the project. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="promptatlas"/>
+				<element value="PromptAtlas"/>
+				<element value="PROMPTATLAS"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- The installed WordPress version (Phase 02). Flags use of functions
+	     newer than this, and deprecated ones. -->
+	<config name="minimum_wp_version" value="7.1"/>
+
+	<!-- ===================================================================
+	     PHP cross-version compatibility.
+
+	     Local development runs PHP 8.2.12, but the production host is not
+	     chosen yet (DECISIONS.md decision 9 / Phase 22), so the code must not
+	     silently depend on 8.2-only syntax. Floor set to 8.0.
+	     Revisit once the host's PHP version is known.
+	     =================================================================== -->
+	<rule ref="PHPCompatibilityWP"/>
+	<config name="testVersion" value="8.0-"/>
+
+</ruleset>

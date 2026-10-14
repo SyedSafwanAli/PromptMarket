@@ -1,0 +1,58 @@
+# PromptAtlas — line endings and diff behaviour
+#
+# Development is on Windows but the production host will be Linux. Normalising
+# to LF in the repository keeps diffs free of whole-file line-ending churn and
+# matches `.editorconfig`, which sets end_of_line = lf.
+
+# Detect text files automatically; store and check out with LF.
+* text=auto eol=lf
+
+# Source files: always LF, never negotiable.
+*.php    text eol=lf
+*.css    text eol=lf
+*.js     text eol=lf
+*.json   text eol=lf
+*.md     text eol=lf
+*.xml    text eol=lf
+*.dist   text eol=lf
+*.yml    text eol=lf
+*.yaml   text eol=lf
+*.txt    text eol=lf
+*.svg    text eol=lf
+*.po     text eol=lf
+*.pot    text eol=lf
+.htaccess text eol=lf
+
+# Windows-only scripts genuinely need CRLF.
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
+*.ps1    text eol=crlf
+
+# Binary: never normalise, never diff as text.
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.webp   binary
+*.avif   binary
+*.ico    binary
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+*.otf    binary
+*.eot    binary
+*.pdf    binary
+*.zip    binary
+*.gz     binary
+*.mo     binary
+
+# Excluded from an export/archive of the repository: development-only files
+# that have no business in a deployed build.
+/Prompts/        export-ignore
+/tools/          export-ignore
+/.gitattributes  export-ignore
+/.gitignore      export-ignore
+/.editorconfig   export-ignore
+/phpcs.xml.dist  export-ignore
+/composer.json   export-ignore
+/composer.lock   export-ignore
