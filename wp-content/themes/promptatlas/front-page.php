@@ -78,6 +78,55 @@ $promptatlas_recent = new WP_Query(
 	</section>
 
 	<?php
+	/*
+	 * Collections, as the curated section.
+	 *
+	 * Phase 08 asks for a "featured prompts" section. There is deliberately no
+	 * per-prompt "featured" flag: CONTENT_STRATEGY.md 4.1 froze the field list
+	 * and does not include one, and inventing a field here would mean Phase 05's
+	 * content model and the documentation no longer describe reality.
+	 *
+	 * Collections already ARE the project's editorial curation mechanism
+	 * (CONTENT_STRATEGY.md 5.1) - hand-picked, hand-ordered, with written
+	 * framing - so they fill this slot honestly. If a per-prompt featured flag
+	 * is wanted later, it should be added as a recorded content-model decision,
+	 * not improvised in a template.
+	 *
+	 * The section renders nothing at all when no collections are published.
+	 */
+	$promptatlas_collections = new WP_Query(
+		array(
+			'post_type'           => 'collection',
+			'post_status'         => 'publish',
+			'posts_per_page'      => 3,
+			'ignore_sticky_posts' => true,
+			'no_found_rows'       => true,
+		)
+	);
+
+	if ( $promptatlas_collections->have_posts() ) :
+		?>
+		<section class="home-section container">
+			<header class="section-header">
+				<h2 class="section-header__title"><?php esc_html_e( 'Curated collections', 'promptatlas' ); ?></h2>
+				<a class="section-header__link" href="<?php echo esc_url( (string) get_post_type_archive_link( 'collection' ) ); ?>">
+					<?php esc_html_e( 'All collections', 'promptatlas' ); ?>
+				</a>
+			</header>
+
+			<div class="card-grid">
+				<?php
+				while ( $promptatlas_collections->have_posts() ) :
+					$promptatlas_collections->the_post();
+					get_template_part( 'template-parts/card', 'collection' );
+				endwhile;
+				wp_reset_postdata();
+				?>
+			</div>
+		</section>
+		<?php
+	endif;
+
 	$promptatlas_categories = get_terms(
 		array(
 			'taxonomy'   => 'prompt_category',
@@ -115,6 +164,26 @@ $promptatlas_recent = new WP_Query(
 		<?php
 	endif;
 	?>
+
+	<section class="home-section container">
+		<div class="home-explainer">
+			<h2 class="home-explainer__title"><?php esc_html_e( 'How this works', 'promptatlas' ); ?></h2>
+			<div class="home-explainer__grid">
+				<div class="home-explainer__item">
+					<h3 class="home-explainer__heading"><?php esc_html_e( 'Find one that fits', 'promptatlas' ); ?></h3>
+					<p><?php esc_html_e( 'Search, or browse by what you are trying to do. Every prompt says plainly what it produces and who it is for.', 'promptatlas' ); ?></p>
+				</div>
+				<div class="home-explainer__item">
+					<h3 class="home-explainer__heading"><?php esc_html_e( 'Fill in the blanks', 'promptatlas' ); ?></h3>
+					<p><?php esc_html_e( 'Anything you need to replace is marked in brackets, like [JOB_TITLE], and explained underneath. Copy it, swap those in, and paste it into your assistant.', 'promptatlas' ); ?></p>
+				</div>
+				<div class="home-explainer__item">
+					<h3 class="home-explainer__heading"><?php esc_html_e( 'Know why it works', 'promptatlas' ); ?></h3>
+					<p><?php esc_html_e( 'Each prompt comes with the reasoning behind it, and what to say next when the first answer is not right. That part is the point.', 'promptatlas' ); ?></p>
+				</div>
+			</div>
+		</div>
+	</section>
 
 </main>
 

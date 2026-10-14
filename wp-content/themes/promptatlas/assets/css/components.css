@@ -747,3 +747,218 @@ a.term-pill:hover {
 .site-mark__slot {
 	fill: var(--color-accent);
 }
+
+/* -------------------------------------------------------------------------
+   17. PROMPT DETAIL (Phase 08)
+   ------------------------------------------------------------------------- */
+
+.prompt-single {
+	max-width: var(--width-content);
+}
+
+.prompt-single__header {
+	max-width: var(--width-prose);
+}
+
+.prompt-single__summary {
+	margin-block: var(--space-sm);
+	color: var(--color-text-muted);
+	font-size: var(--text-lg);
+	max-width: 54ch;
+}
+
+.prompt-single__section {
+	margin-block: var(--space-2xl);
+}
+
+.prompt-single__heading {
+	font-size: var(--text-xl);
+	margin-block-end: var(--space-md);
+	padding-block-end: var(--space-2xs);
+	border-block-end: var(--border-width) solid var(--color-border);
+	max-width: var(--width-prose);
+}
+
+.prompt-single__example-meta {
+	color: var(--color-text-muted);
+	font-size: var(--text-sm);
+	margin-block-end: var(--space-sm);
+}
+
+.example-output {
+	background-color: var(--color-surface-sunken);
+	border: var(--border-width) solid var(--color-border);
+	border-radius: var(--radius-md);
+}
+
+.example-output__text {
+	margin: 0;
+	padding: var(--space-md);
+	font-family: var(--font-mono);
+	font-size: var(--text-sm);
+	line-height: var(--leading-relaxed);
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+	max-height: 28rem;
+	overflow-y: auto;
+}
+
+.prompt-single__footer {
+	display: grid;
+	gap: var(--space-lg);
+	margin-block-start: var(--space-2xl);
+	padding-block-start: var(--space-lg);
+	border-block-start: var(--border-width) solid var(--color-border);
+}
+
+@media (min-width: 48em) {
+	.prompt-single__footer {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+.prompt-single__meta-label {
+	margin-block-end: var(--space-2xs);
+	color: var(--color-text-faint);
+	font-size: var(--text-xs);
+	font-weight: var(--weight-semibold);
+	letter-spacing: var(--tracking-wide);
+	text-transform: uppercase;
+}
+
+.prompt-single__attribution {
+	margin: 0;
+	color: var(--color-text-muted);
+	font-size: var(--text-sm);
+}
+
+.prompt-block__status {
+	margin: 0;
+	padding-inline: var(--space-md);
+	min-height: 1.25rem;
+	color: var(--color-code-text);
+	font-size: var(--text-xs);
+}
+
+.copy-button[data-state="failed"] {
+	background-color: var(--color-surface-sunken);
+	border-color: var(--color-border-control);
+	color: var(--color-text);
+}
+
+.entry-meta__sep {
+	margin-inline: var(--space-3xs);
+	color: var(--color-text-faint);
+}
+
+/* -------------------------------------------------------------------------
+   18. RELATED
+   ------------------------------------------------------------------------- */
+
+.related {
+	margin-block-start: var(--section-gap);
+	padding-block-start: var(--space-lg);
+	border-block-start: var(--border-width) solid var(--color-border);
+}
+
+.related .card-grid {
+	margin-block-start: var(--space-lg);
+}
+
+.related__empty {
+	color: var(--color-text-muted);
+	margin-block: var(--space-md);
+}
+
+/* -------------------------------------------------------------------------
+   19. COLLECTION LIST
+   A numbered editorial list, because the order is meaningful. Deliberately
+   not a card grid: a grid implies the items are interchangeable.
+   ------------------------------------------------------------------------- */
+
+.collection-prompts {
+	margin-block-start: var(--section-gap);
+	max-width: var(--width-content);
+}
+
+.collection-list {
+	margin: var(--space-lg) 0 0;
+	padding: 0;
+	list-style: none;
+	counter-reset: collection;
+	border-block-start: var(--border-width) solid var(--color-border);
+}
+
+.collection-list__item {
+	display: flex;
+	gap: var(--space-md);
+	padding-block: var(--space-md);
+	border-block-end: var(--border-width) solid var(--color-border);
+}
+
+.collection-list__number {
+	flex: 0 0 2rem;
+	color: var(--color-text-faint);
+	font-size: var(--text-sm);
+	font-variant-numeric: tabular-nums;
+	padding-block-start: 0.2em;
+}
+
+.collection-list__title {
+	font-size: var(--text-lg);
+	margin: 0;
+}
+
+.collection-list__title a {
+	color: var(--color-text);
+	text-decoration: none;
+}
+
+.collection-list__title a:hover {
+	color: var(--color-primary);
+	text-decoration: underline;
+}
+
+.collection-list__excerpt {
+	margin-block-start: var(--space-3xs);
+	color: var(--color-text-muted);
+	font-size: var(--text-sm);
+	max-width: 62ch;
+}
+
+/* -------------------------------------------------------------------------
+   20. HOMEPAGE EXPLAINER
+   ------------------------------------------------------------------------- */
+
+.home-explainer {
+	padding-block-start: var(--space-lg);
+	border-block-start: var(--border-width) solid var(--color-border);
+}
+
+.home-explainer__title {
+	font-size: var(--text-xl);
+	margin-block-end: var(--space-lg);
+}
+
+.home-explainer__grid {
+	display: grid;
+	gap: var(--space-lg);
+}
+
+@media (min-width: 48em) {
+	.home-explainer__grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.home-explainer__heading {
+	font-size: var(--text-base);
+	margin-block-end: var(--space-2xs);
+	color: var(--color-primary);
+}
+
+.home-explainer__item p {
+	margin: 0;
+	color: var(--color-text-muted);
+	font-size: var(--text-sm);
+}

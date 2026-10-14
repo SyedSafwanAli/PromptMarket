@@ -14,8 +14,11 @@ exact next step. Update it after every phase.
 | 03 — Tooling, docs and version control | **Complete** | 2026-10-14 | Git boundary set, full doc set, PHPCS + WPCS installed and passing. |
 | 04 — Information architecture | **Complete** | 2026-10-14 | `CONTENT_STRATEGY.md`; taxonomy + URLs frozen as decisions 12 and 13. |
 | 05 — Content model | **Complete** | 2026-10-14 | `promptatlas-core` plugin: 2 post types, 3 taxonomies, 8 meta fields. All checks pass. |
-| 06 — Theme foundation | **In progress** | — | — |
-| 07–25 | Not started | — | — |
+| 06 — Theme foundation | **Complete** | 2026-10-14 | Custom theme active. Dark mode mechanism established. |
+| 07 — Design system | **Complete** | 2026-10-14 | Tokens, components, brand assets, measured contrast. `/style-reference/`. |
+| 08 — Frontend templates | **Complete** | 2026-10-14 | All public templates rendering real content. 9 edge cases tested. |
+| 09 — Search and discovery | Not started | — | **Next.** |
+| 10–25 | Not started | — | — |
 
 > **Note on ordering.** Phase 02 ran before Phase 01 at the owner's instruction. Phase 01 was
 > then completed retroactively on 2026-10-14, and its decisions 3 and 6 confirmed the provisional
@@ -512,7 +515,170 @@ honest; an invented example is not.
 
 ---
 
+---
+
+## Phase 06 — Theme foundation
+
+Completed 2026-10-14. The `promptatlas` theme is built and active.
+
+**Files:** `style.css` (header only), `functions.php`, `inc/` (setup, assets, branding,
+template-tags, comments-off), templates (`index`, `front-page`, `page`, `single`, `archive`,
+`search`, `404`, `searchform`), `template-parts/` (card, card-prompt, card-collection),
+`assets/css/` (tokens, theme, components), `assets/js/theme-toggle.js`.
+
+**Dark mode mechanism**, established now rather than retrofitted: no attribute follows the OS,
+`data-theme="dark"`/`"light"` overrides it, and the media query is guarded with
+`:root:not([data-theme="light"])` so an explicit light choice beats an OS set to dark. A small
+inline head script applies the saved preference before first paint — deferring it would flash the
+light theme on every load for dark-mode visitors.
+
+**Deferred Phase 05 test now passed for real:** after switching from `twentytwentyfive` to
+`promptatlas`, the post types stayed registered and all published prompts and 8 categories
+survived.
+
+**Bug found and fixed:** the homepage rendered **two `<h1>` elements** — the site title became an
+h1 on the front page while the intro heading was also one. The site name is now never an h1.
+Verified: exactly one h1 on all 8 page types.
+
+**Also fixed:** the comments feed link remained in `<head>`. It is printed by `feed_links()`, not
+`feed_links_extra()`, so it needed `feed_links_show_comments_feed` — removing the action would have
+taken the useful posts feed with it.
+
+---
+
+## Phase 07 — Design system and brand assets
+
+Completed 2026-10-14. Full documentation in [`DESIGN_SYSTEM.md`](DESIGN_SYSTEM.md).
+Live reference at **`/style-reference/`** (noindex).
+
+**Contrast was computed, not assumed**, and the numbers changed three design decisions:
+
+1. **White on the orange button fails AA** at 3.14:1. The accent button now carries near-black
+   text at 5.46:1. Orange as *text* routes through a darkened step at 7.35:1.
+2. **Control borders needed their own token.** The decorative hairline is 1.55:1 — fine for a
+   separator, which is exempt, but not for anything whose boundary identifies a control under
+   WCAG 2.2 SC 1.4.11. `--color-border-control` is 3.64:1 light / 3.96:1 dark.
+3. **The focus ring was darkened** from raw orange's 3.01:1 — a technical pass, too close to rely
+   on — to 4.33:1.
+
+Burgundy and olive measure 2.09:1 and 3.01:1 on the dark background and are replaced by light
+steps. Those two failing rows are kept in the contrast table as documentation of why dark mode is
+not the light palette inverted.
+
+**Brand assets:** `mark.svg`, `favicon.svg`, `favicon-32.png`, `icon-192.png`, `icon-512.png`,
+`apple-touch-icon.png`, `og-default.png` (1200×630). The mark is square brackets with a filled
+block between them — the placeholder convention the whole content model uses.
+
+**Stated outstanding:** a designed wordmark. The current one is a system-font treatment, which
+`DESIGN_SYSTEM.md` says plainly. An SVG wordmark with `<text>` was deliberately not shipped: it
+renders in whatever font the viewer has, so it would have looked finished while being worse. Also
+outstanding: `favicon.ico` (no ICO writer available; modern browsers use the SVG and PNGs).
+
+---
+
+## Phase 08 — Frontend templates
+
+Completed 2026-10-14.
+
+### Templates added
+
+| Template | Purpose |
+|---|---|
+| `single-prompt.php` | Prompt detail — the page the site exists for |
+| `archive-prompt.php` | `/prompts/` listing |
+| `taxonomy.php` | **One** template for category, tool and tag archives |
+| `single-collection.php` | Collection with its prompts in editorial order |
+| `template-parts/prompt-block.php` | The prompt text and copy control |
+| `assets/js/copy.js` | Working copy-to-clipboard |
+
+`taxonomy.php` serves all three taxonomies rather than three near-identical files; only the framing
+sentence differs, and that is chosen by taxonomy inside the template.
+
+### Page order on a prompt detail page
+
+Title → summary → **prompt + copy** → what to replace → explanation → example output → metadata →
+related. The explanation sits **below** the prompt deliberately: `CONTENT_STRATEGY.md` 2 is
+explicit that visitors come to copy, and nobody reads an essay to reach a copy button.
+
+### Two scope decisions worth flagging
+
+**1. The copy button genuinely works.** Phase 08 says to build interfaces only and leave behaviour
+to Phase 10. But the standing rule forbids any feature that exists as a non-functional visual
+placeholder, and a copy button that does not copy is exactly that. `copy.js` implements the copy
+action with a selection-based fallback for non-secure contexts (plain `http://` staging, where
+`navigator.clipboard` is unavailable). **Phase 10 still owns Recently Copied and Saved.**
+
+**2. No "featured prompt" flag was invented.** Phase 08 asks for a featured section, but
+`CONTENT_STRATEGY.md` 4.1 froze the field list and does not include one. Adding a field in a
+template would make Phase 05's model and the documentation stop describing reality. Collections
+already *are* the project's curation mechanism — hand-picked, hand-ordered, with written framing —
+so the homepage's curated section is driven by them, and renders nothing when none are published.
+If a per-prompt featured flag is wanted, it should be a recorded content-model decision.
+
+### Query counts — Phase 15 baseline
+
+Measured with temporary instrumentation, since removed.
+
+| Template | Queries |
+|---|---|
+| Homepage | 35 |
+| Single prompt | 31 |
+| Search results | 26 |
+| Prompt archive | 25 |
+| Tag archive | 24 |
+| Category archive | 24 |
+| Tool archive | 23 |
+| Page | 20 |
+| Style reference | 18 |
+| 404 | 17 |
+| Collection archive | 14 |
+
+No N+1 pattern. The homepage is highest because it runs three listings; every listing is paginated.
+
+### Edge cases — all 9 tested, with real results
+
+| Case | Result |
+|---|---|
+| **XSS probe** `<script>alert('xss')</script>` in prompt text | **Escaped.** 0 raw occurrences, 1 escaped. Confirms escape-then-highlight order is correct |
+| Non-Latin text — اردو, 中文, Rôle, français, ✅ | All rendered correctly |
+| `List<String>` and `a<b` in prompt text | Survived as entities — the custom sanitiser works end to end |
+| Very long multi-line prompt (40+ lines) | Whitespace preserved: 4-space indent and a literal tab both intact; both `[TOKEN]`s highlighted; long unbroken word present and wrapped |
+| Very long title | Wraps in the card grid |
+| Bare prompt — no excerpt, tags, tools, category or image | 200, exactly one h1, related fallback shown, **no empty metadata groups rendered** |
+| Empty category | 200, empty state, editor's term description used |
+| Page 2 of a paginated archive | 200, current page marked; page 99 correctly 404s |
+| **No published prompts at all** | Homepage, archive and category all show honest empty states. Zero fabricated "trending/popular/most copied" content. The "Add a prompt" action correctly does **not** appear for logged-out visitors |
+| Search with no results | "No results", reports 0, offers a real next action |
+
+All fixtures were deleted afterwards; the site is back to 2 published prompts and 8 categories.
+
+**Zero PHP notices** throughout with `WP_DEBUG` on. `composer check` passes on **35 files**.
+
+### Visually present but not yet functional
+
+Nothing. The two places this could have happened were handled rather than shipped dead:
+the copy button was implemented, and the featured section is driven by real collections.
+
+Deliberately not built here, per the phase boundaries: search ranking and Roman Urdu synonyms
+(Phase 09), Recently Copied and Saved (Phase 10), collection curation UI (Phase 11), SEO meta
+output (Phase 12), and the ad slots are styled containers only with no ad code (Phase 18).
+
+---
+
 ## Exact next step
 
-**Phase 06 — Theme foundation** (`docs/06-theme-foundation.md`), then Phase 07 (design system) and
-Phase 08 (templates). Phase 06 must also run the deferred theme-switch test from Phase 05.
+**Phase 09 — Search and discovery** (`docs/09-search-and-discovery.md`).
+
+Phase 09 must implement the real search behaviour — including the Roman-Urdu-query-to-English-
+content synonym mapping settled in decision 3 — and the zero-result logging that
+`CONTENT_STRATEGY.md` 6.5 depends on.
+
+### Carried forward, not yet done
+
+- **No browser testing has happened at any point.** Verification has been HTTP requests and HTML
+  inspection. No browser automation is available here, so rendering, the keyboard path, the theme
+  toggle, the mobile menu and the copy button have **not** been exercised in a real browser.
+  `/style-reference/` exists to make that review quick when someone can do it.
+- The admin editing UI has not been clicked through by hand.
+- The two published prompts have **not been test-run against a live model** — in
+  `LAUNCH_CHECKLIST.md`.

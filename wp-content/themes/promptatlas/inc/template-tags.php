@@ -306,3 +306,56 @@ function promptatlas_pagination() {
 		)
 	);
 }
+
+/**
+ * Render prompt text with placeholder tokens highlighted.
+ *
+ * Order matters and is the whole security contract here: the text is escaped
+ * FIRST with esc_html(), and only then are the [TOKEN] patterns wrapped in
+ * markup. Doing it the other way round would mean injecting markup into
+ * unescaped author text.
+ *
+ * Because escaping happens first, the only HTML in the result is the span this
+ * function adds, so it is safe to echo. The token pattern matches
+ * [UPPERCASE_UNDERSCORE] per CONTENT_STRATEGY.md 4.5, and angle brackets in the
+ * prompt - <your name here>, List<String> - are already entities by this point
+ * and cannot be confused for tags.
+ *
+ * @param string $text Raw prompt text.
+ * @return string Escaped HTML, safe to echo.
+ */
+function promptatlas_format_prompt_text( $text ) {
+	if ( ! is_string( $text ) || '' === $text ) {
+		return '';
+	}
+
+	$escaped = esc_html( $text );
+
+	$highlighted = preg_replace(
+		'/\[([A-Z0-9_]{2,})\]/',
+		'<span class="prompt-token">[$1]</span>',
+		$escaped
+	);
+
+	return is_string( $highlighted ) ? $highlighted : $escaped;
+}
+
+/**
+ * Check whether a page exists and is published, by slug.
+ *
+ * Used by the footer so policy links appear only once Phase 17 has created the
+ * pages. Rendering a link to a page that does not exist yet would be a dead
+ * link on a live site.
+ *
+ * @param string $slug Page slug.
+ * @return string Permalink, or an empty string when the page is not published.
+ */
+function promptatlas_page_url( $slug ) {
+	$page = get_page_by_path( sanitize_title( $slug ) );
+
+	if ( ! $page || 'publish' !== $page->post_status ) {
+		return '';
+	}
+
+	return (string) get_permalink( $page );
+}

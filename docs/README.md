@@ -76,9 +76,9 @@ Update this table as you complete each phase.
 | 03 | Complete | 2026-10-14 | Git boundary, full doc set, PHPCS + WPCS passing. |
 | 04 | Complete | 2026-10-14 | CONTENT_STRATEGY.md. Taxonomy + URLs frozen (decisions 12, 13). |
 | 05 | Complete | 2026-10-14 | promptatlas-core plugin. 3 bugs found and fixed; see PROGRESS.md. |
-| 06 | Not started | | |
-| 07 | Not started | | |
-| 08 | Not started | | |
+| 06 | Complete | 2026-10-14 | Custom theme active; dark mode mechanism established. |
+| 07 | Complete | 2026-10-14 | Tokens, components, brand assets, measured contrast. /style-reference/. |
+| 08 | Complete | 2026-10-14 | All public templates on real content. 9 edge cases tested. |
 | 09 | Not started | | |
 | 10 | Not started | | |
 | 11 | Not started | | |

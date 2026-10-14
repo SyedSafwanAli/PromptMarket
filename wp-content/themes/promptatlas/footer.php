@@ -18,7 +18,9 @@ defined( 'ABSPATH' ) || exit;
 				<?php endif; ?>
 			</div>
 
-			<?php if ( has_nav_menu( 'footer' ) ) : ?>
+			<?php
+			if ( has_nav_menu( 'footer' ) ) :
+				?>
 				<nav class="site-footer__nav" aria-label="<?php esc_attr_e( 'Footer navigation', 'promptatlas' ); ?>">
 					<?php
 					wp_nav_menu(
@@ -32,7 +34,49 @@ defined( 'ABSPATH' ) || exit;
 					);
 					?>
 				</nav>
-			<?php endif; ?>
+				<?php
+			else :
+				/*
+				 * Policy links, rendered only for pages that actually exist and
+				 * are published. Phase 17 creates them; until then the footer
+				 * simply omits the link rather than shipping a dead one.
+				 *
+				 * Once Phase 17 has run, assigning a Footer menu replaces this
+				 * fallback entirely.
+				 */
+				$promptatlas_policy_pages = array(
+					'about'          => __( 'About', 'promptatlas' ),
+					'contact'        => __( 'Contact', 'promptatlas' ),
+					'privacy-policy' => __( 'Privacy Policy', 'promptatlas' ),
+					'terms'          => __( 'Terms', 'promptatlas' ),
+					'dmca'           => __( 'DMCA', 'promptatlas' ),
+				);
+
+				$promptatlas_policy_links = array();
+
+				foreach ( $promptatlas_policy_pages as $promptatlas_slug => $promptatlas_label ) {
+					$promptatlas_url = promptatlas_page_url( $promptatlas_slug );
+
+					if ( '' !== $promptatlas_url ) {
+						$promptatlas_policy_links[ $promptatlas_url ] = $promptatlas_label;
+					}
+				}
+
+				if ( ! empty( $promptatlas_policy_links ) ) :
+					?>
+					<nav class="site-footer__nav" aria-label="<?php esc_attr_e( 'Footer navigation', 'promptatlas' ); ?>">
+						<ul class="site-footer__list">
+							<?php foreach ( $promptatlas_policy_links as $promptatlas_url => $promptatlas_label ) : ?>
+								<li>
+									<a href="<?php echo esc_url( $promptatlas_url ); ?>"><?php echo esc_html( $promptatlas_label ); ?></a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</nav>
+					<?php
+				endif;
+			endif;
+			?>
 
 			<p class="site-footer__legal">
 				<?php

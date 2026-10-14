@@ -78,6 +78,25 @@ function promptatlas_enqueue_assets() {
 			'in_footer' => true,
 		)
 	);
+
+	/*
+	 * The copy script loads only where a prompt block exists. Shipping it on the
+	 * homepage and every archive would be bytes parsed for a control that is not
+	 * on the page — exactly the "do not enqueue an asset the page does not use"
+	 * rule from Phase 06.
+	 */
+	if ( is_singular( 'prompt' ) ) {
+		wp_enqueue_script(
+			'promptatlas-copy',
+			PROMPTATLAS_THEME_URI . 'assets/js/copy.js',
+			array(),
+			promptatlas_asset_version( 'assets/js/copy.js' ),
+			array(
+				'strategy'  => 'defer',
+				'in_footer' => true,
+			)
+		);
+	}
 }
 add_action( 'wp_enqueue_scripts', 'promptatlas_enqueue_assets' );
 
