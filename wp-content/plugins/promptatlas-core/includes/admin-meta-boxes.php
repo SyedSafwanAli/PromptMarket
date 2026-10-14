@@ -319,8 +319,9 @@ function promptatlas_render_sourcing_box( $post ) {
 function promptatlas_render_collection_box( $post ) {
 	wp_nonce_field( PROMPTATLAS_NONCE_COLLECTION, PROMPTATLAS_NONCE_COLLECTION_FIELD );
 
-	$prompt_ids = get_post_meta( $post->ID, PROMPTATLAS_META_COLLECTION_PROMPTS, true );
-	$prompt_ids = is_array( $prompt_ids ) ? $prompt_ids : array();
+	$prompt_ids        = get_post_meta( $post->ID, PROMPTATLAS_META_COLLECTION_PROMPTS, true );
+	$prompt_ids        = is_array( $prompt_ids ) ? $prompt_ids : array();
+	$promptatlas_notes = promptatlas_get_collection_notes( $post->ID );
 
 	?>
 	<p class="description">
@@ -346,7 +347,7 @@ function promptatlas_render_collection_box( $post ) {
 			<thead>
 				<tr>
 					<th scope="col" style="width: 60px;"><?php esc_html_e( 'ID', 'promptatlas' ); ?></th>
-					<th scope="col"><?php esc_html_e( 'Prompt', 'promptatlas' ); ?></th>
+					<th scope="col"><?php esc_html_e( 'Prompt and note', 'promptatlas' ); ?></th>
 					<th scope="col" style="width: 100px;"><?php esc_html_e( 'Status', 'promptatlas' ); ?></th>
 				</tr>
 			</thead>
@@ -359,6 +360,18 @@ function promptatlas_render_collection_box( $post ) {
 							<a href="<?php echo esc_url( (string) get_edit_post_link( $prompt_id ) ); ?>">
 								<?php echo esc_html( get_the_title( $prompt_id ) ); ?>
 							</a>
+							<br>
+							<label class="screen-reader-text" for="promptatlas_note_<?php echo esc_attr( (string) $prompt_id ); ?>">
+								<?php esc_html_e( 'Note for this entry', 'promptatlas' ); ?>
+							</label>
+							<input
+								type="text"
+								id="promptatlas_note_<?php echo esc_attr( (string) $prompt_id ); ?>"
+								name="promptatlas_collection_notes[<?php echo esc_attr( (string) $prompt_id ); ?>]"
+								value="<?php echo esc_attr( isset( $promptatlas_notes[ $prompt_id ] ) ? $promptatlas_notes[ $prompt_id ] : '' ); ?>"
+								class="large-text"
+								placeholder="<?php esc_attr_e( 'Optional: why this one is here, or when to use it', 'promptatlas' ); ?>"
+							>
 						</td>
 						<td><?php echo esc_html( (string) get_post_status( $prompt_id ) ); ?></td>
 					</tr>
@@ -529,6 +542,20 @@ function promptatlas_save_collection_meta( $post_id, $post ) {
 		delete_post_meta( $post_id, PROMPTATLAS_META_COLLECTION_PROMPTS );
 	} else {
 		update_post_meta( $post_id, PROMPTATLAS_META_COLLECTION_PROMPTS, $prompt_ids );
+	}
+
+	$notes = isset( $_POST['promptatlas_collection_notes'] ) && is_array( $_POST['promptatlas_collection_notes'] )
+		? promptatlas_sanitize_collection_notes( wp_unslash( $_POST['promptatlas_collection_notes'] ) )
+		: array();
+
+	// Only keep notes for prompts still in the collection, so removing a prompt
+	// does not leave an orphaned note that reappears if it is added back later.
+	$notes = array_intersect_key( $notes, array_flip( $prompt_ids ) );
+
+	if ( empty( $notes ) ) {
+		delete_post_meta( $post_id, PROMPTATLAS_META_COLLECTION_NOTES );
+	} else {
+		update_post_meta( $post_id, PROMPTATLAS_META_COLLECTION_NOTES, $notes );
 	}
 
 	// Keep the reverse index on each prompt in step with this list.

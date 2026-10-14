@@ -16,11 +16,17 @@ get_header();
 while ( have_posts() ) :
 	the_post();
 
-	$promptatlas_coll_id = (int) get_the_ID();
-	$promptatlas_prompts = function_exists( 'promptatlas_get_collection_prompts' )
+	$promptatlas_coll_id       = (int) get_the_ID();
+	$promptatlas_prompts       = function_exists( 'promptatlas_get_collection_prompts' )
 		? promptatlas_get_collection_prompts( $promptatlas_coll_id )
 		: array();
-	$promptatlas_count   = count( $promptatlas_prompts );
+	$promptatlas_count         = count( $promptatlas_prompts );
+	$promptatlas_notes         = function_exists( 'promptatlas_get_collection_notes' )
+		? promptatlas_get_collection_notes( $promptatlas_coll_id )
+		: array();
+	$promptatlas_related_colls = function_exists( 'promptatlas_get_related_collections' )
+		? promptatlas_get_related_collections( $promptatlas_coll_id, 3 )
+		: array();
 	?>
 
 	<main id="primary" class="site-main container" role="main">
@@ -89,7 +95,24 @@ while ( have_posts() ) :
 									<p class="collection-list__excerpt">
 										<?php echo esc_html( $promptatlas_item_excerpt ); ?>
 									</p>
-								<?php endif; ?>
+									<?php
+								endif;
+
+								/*
+								 * The editor's note on this entry. This is the
+								 * thing a bare list of links cannot do: it says
+								 * why this prompt is here and when to reach for
+								 * it, which is the editorial value of the
+								 * collection.
+								 */
+								if ( ! empty( $promptatlas_notes[ $promptatlas_prompt_id ] ) ) :
+									?>
+									<p class="collection-list__note">
+										<?php echo esc_html( $promptatlas_notes[ $promptatlas_prompt_id ] ); ?>
+									</p>
+									<?php
+								endif;
+								?>
 							</div>
 						</li>
 					<?php endforeach; ?>
@@ -100,6 +123,23 @@ while ( have_posts() ) :
 				</p>
 			<?php endif; ?>
 		</section>
+
+		<?php if ( ! empty( $promptatlas_related_colls ) ) : ?>
+			<aside class="related" aria-labelledby="related-collections-heading">
+				<h2 id="related-collections-heading" class="section-header__title">
+					<?php esc_html_e( 'Related collections', 'promptatlas' ); ?>
+				</h2>
+				<ul class="term-list" style="margin-top: var(--space-md);">
+					<?php foreach ( $promptatlas_related_colls as $promptatlas_other_id ) : ?>
+						<li>
+							<a class="term-pill" href="<?php echo esc_url( (string) get_permalink( $promptatlas_other_id ) ); ?>">
+								<?php echo esc_html( get_the_title( $promptatlas_other_id ) ); ?>
+							</a>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</aside>
+		<?php endif; ?>
 
 	</main>
 

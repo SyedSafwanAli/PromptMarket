@@ -89,6 +89,37 @@ $promptatlas_description = term_description();
 		<?php endif; ?>
 	</header>
 
+	<?php
+	/*
+	 * Collections drawing on this term, ranked by how many of its prompts they
+	 * contain. This is the category-to-collection link Phase 11 asks for, and
+	 * it renders nothing when no collection is relevant rather than producing
+	 * an automatic link block with no value.
+	 */
+	$promptatlas_term_colls = ( $promptatlas_term instanceof WP_Term && function_exists( 'promptatlas_get_collections_for_term' ) )
+		? promptatlas_get_collections_for_term( $promptatlas_term->term_id, $promptatlas_tax, 3 )
+		: array();
+
+	if ( ! empty( $promptatlas_term_colls ) ) :
+		?>
+		<aside class="term-collections" aria-labelledby="term-collections-heading">
+			<h2 id="term-collections-heading" class="prompt-single__meta-label">
+				<?php esc_html_e( 'Curated sets that include these', 'promptatlas' ); ?>
+			</h2>
+			<ul class="term-list">
+				<?php foreach ( $promptatlas_term_colls as $promptatlas_coll ) : ?>
+					<li>
+						<a class="term-pill" href="<?php echo esc_url( (string) get_permalink( $promptatlas_coll ) ); ?>">
+							<?php echo esc_html( get_the_title( $promptatlas_coll ) ); ?>
+						</a>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</aside>
+		<?php
+	endif;
+	?>
+
 	<?php if ( have_posts() ) : ?>
 
 		<div class="card-grid">

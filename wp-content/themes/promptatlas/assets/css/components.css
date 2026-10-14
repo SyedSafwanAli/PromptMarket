@@ -1139,3 +1139,27 @@ a.term-pill:hover {
 	font-size: var(--text-sm);
 	max-width: 62ch;
 }
+
+/* -------------------------------------------------------------------------
+   23. COLLECTION NOTES AND HUB LINKS (Phase 11)
+   ------------------------------------------------------------------------- */
+
+.collection-list__note {
+	margin-block-start: var(--space-2xs);
+	padding-inline-start: var(--space-sm);
+	border-inline-start: 2px solid var(--color-highlight);
+	color: var(--color-text);
+	font-size: var(--text-sm);
+	max-width: 62ch;
+}
+
+.term-collections {
+	margin-block-end: var(--space-xl);
+	padding: var(--space-sm) var(--space-md);
+	background-color: var(--color-surface-sunken);
+	border-radius: var(--radius-md);
+}
+
+.term-collections .prompt-single__meta-label {
+	margin-block-end: var(--space-2xs);
+}

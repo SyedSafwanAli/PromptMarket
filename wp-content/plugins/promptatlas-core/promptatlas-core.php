@@ -73,8 +73,23 @@ add_action( 'init', 'promptatlas_load_textdomain' );
  * @return void
  */
 function promptatlas_activate() {
-	promptatlas_register_post_types();
+	/*
+	 * ORDER IS LOAD-BEARING: taxonomies before post types.
+	 *
+	 * The same ordering requirement as the init priorities in taxonomies.php
+	 * (5) and post-types.php (6), and for the same reason: the `prompt` post
+	 * type generates an attachment catch-all rule, prompts/[^/]+/([^/]+)/?$,
+	 * which matches any two segments under /prompts/ and would otherwise sort
+	 * above the taxonomy rules and 404 every category, tool and tag archive.
+	 *
+	 * Those init priorities do NOT cover this path. Activation calls these
+	 * functions directly, in whatever order they appear here, and then flushes
+	 * - so getting it right on `init` and wrong here still writes broken rules
+	 * to the database. That is exactly what happened: the archives worked,
+	 * then silently 404'd again after the next plugin reactivation.
+	 */
 	promptatlas_register_taxonomies();
+	promptatlas_register_post_types();
 	promptatlas_seed_terms();
 
 	promptatlas_rebuild_all_search_blobs();

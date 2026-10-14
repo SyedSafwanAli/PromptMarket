@@ -69,6 +69,7 @@
 				<element value="promptatlas_sanitize_variables"/>
 				<element value="promptatlas_sanitize_related_ids"/>
 				<element value="promptatlas_sanitize_collection_prompts"/>
+				<element value="promptatlas_sanitize_collection_notes"/>
 			</property>
 		</properties>
 	</rule>

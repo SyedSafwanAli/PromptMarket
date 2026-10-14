@@ -214,3 +214,119 @@ function promptatlas_get_prompt_category( $post_id ) {
 
 	return $terms[0];
 }
+
+/**
+ * Get collections that contain prompts from a given term.
+ *
+ * Powers the "collections for this category" block on taxonomy archives
+ * (Phase 11 step 3). Works off the reverse index, so it is a meta lookup rather
+ * than a scan of every collection's serialised ID list.
+ *
+ * @param int    $term_id  Term ID.
+ * @param string $taxonomy Taxonomy name.
+ * @param int    $limit    Maximum collections to return.
+ * @return int[] Published collection IDs, most relevant first.
+ */
+function promptatlas_get_collections_for_term( $term_id, $taxonomy, $limit = 3 ) {
+	$term_id = absint( $term_id );
+	$limit   = max( 1, absint( $limit ) );
+
+	if ( 0 === $term_id ) {
+		return array();
+	}
+
+	$prompt_ids = get_posts(
+		array(
+			'post_type'              => 'prompt',
+			'post_status'            => 'publish',
+			'posts_per_page'         => 50,
+			'fields'                 => 'ids',
+			'no_found_rows'          => true,
+			'update_post_term_cache' => false,
+			'tax_query'              => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- The term relationship is the question being asked; there is no non-taxonomy way to express it.
+				array(
+					'taxonomy' => $taxonomy,
+					'field'    => 'term_id',
+					'terms'    => $term_id,
+				),
+			),
+		)
+	);
+
+	if ( empty( $prompt_ids ) ) {
+		return array();
+	}
+
+	// Count how many of this term's prompts each collection contains, so the
+	// most relevant collection is offered first rather than an arbitrary one.
+	$scores = array();
+
+	foreach ( $prompt_ids as $prompt_id ) {
+		foreach ( promptatlas_get_collections_for_prompt( (int) $prompt_id ) as $collection_id ) {
+			if ( ! isset( $scores[ $collection_id ] ) ) {
+				$scores[ $collection_id ] = 0;
+			}
+
+			++$scores[ $collection_id ];
+		}
+	}
+
+	if ( empty( $scores ) ) {
+		return array();
+	}
+
+	arsort( $scores );
+
+	return array_slice( array_keys( $scores ), 0, $limit );
+}
+
+/**
+ * Get collections related to a collection.
+ *
+ * Related means "shares prompts with this one", which is the only honest signal
+ * available: two collections drawing on the same prompts genuinely serve
+ * adjacent needs. Collections sharing nothing are not offered, rather than
+ * padding the list with whatever was published most recently.
+ *
+ * @param int $collection_id Collection ID.
+ * @param int $limit         Maximum to return.
+ * @return int[] Published collection IDs.
+ */
+function promptatlas_get_related_collections( $collection_id, $limit = 3 ) {
+	$collection_id = absint( $collection_id );
+	$limit         = max( 1, absint( $limit ) );
+
+	if ( 0 === $collection_id ) {
+		return array();
+	}
+
+	$own_prompts = promptatlas_get_collection_prompts( $collection_id );
+
+	if ( empty( $own_prompts ) ) {
+		return array();
+	}
+
+	$scores = array();
+
+	foreach ( $own_prompts as $prompt_id ) {
+		foreach ( promptatlas_get_collections_for_prompt( (int) $prompt_id ) as $other_id ) {
+			if ( (int) $other_id === $collection_id ) {
+				continue;
+			}
+
+			if ( ! isset( $scores[ $other_id ] ) ) {
+				$scores[ $other_id ] = 0;
+			}
+
+			++$scores[ $other_id ];
+		}
+	}
+
+	if ( empty( $scores ) ) {
+		return array();
+	}
+
+	arsort( $scores );
+
+	return array_slice( array_keys( $scores ), 0, $limit );
+}

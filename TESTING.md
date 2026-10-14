@@ -17,6 +17,28 @@ Run from the repository root, `C:\xampp\htdocs\promptmarket`:
 | Coding standards | `composer cs` | No WPCS violations |
 | Both | `composer check` | Both of the above |
 | Auto-fix style | `composer cs:fix` | — (rewrites files) |
+| **Rewrite routes** | `wp eval-file tools/check-routes.php` | Every frozen URL resolves to the right query |
+
+### Route check — run this after anything that touches registration
+
+```bash
+C:/xampp/php/php.exe C:/xampp/wp-cli.phar eval-file tools/check-routes.php
+```
+
+**This exists because the same bug shipped twice.** The `prompt` post type
+generates an attachment catch-all rule, `prompts/[^/]+/([^/]+)/?$`, that matches
+any two segments under `/prompts/`. When it sorts above the taxonomy rules,
+every category, tool and tag archive silently 404s — the terms still exist,
+nothing errors, the pages just stop working.
+
+Phase 05 fixed the `init` priorities. Phase 11 found it back, because
+`promptatlas_activate()` registers the types directly in its own order and then
+flushes, which the priorities do not cover.
+
+Run it after changing post type or taxonomy registration, after changing a
+rewrite slug, and after any plugin activation. Verified to catch the real bug:
+reintroducing the wrong order makes 3 of 7 routes fail with the correct
+diagnosis.
 
 Direct equivalents, if Composer's script runner is not wanted:
 

@@ -81,6 +81,16 @@ const PROMPTATLAS_META_COLLECTION_PROMPTS = '_promptatlas_collection_prompts';
 const PROMPTATLAS_META_IN_COLLECTION = '_promptatlas_in_collection';
 
 /**
+ * Meta key on a collection: per-entry editorial notes, keyed by prompt ID.
+ *
+ * Added in Phase 11, which requires an editor to be able to add commentary for
+ * individual entries. Kept as a separate map rather than folded into the
+ * ordered ID list so that the existing list format - and any collection already
+ * saved with it - stays valid.
+ */
+const PROMPTATLAS_META_COLLECTION_NOTES = '_promptatlas_collection_notes';
+
+/**
  * Sanitise multi-line author text without destroying angle brackets.
  *
  * Used for the prompt text and the example output. See the file header for why
@@ -251,6 +261,58 @@ function promptatlas_sanitize_collection_prompts( $value ) {
 }
 
 /**
+ * Sanitise the per-entry collection notes.
+ *
+ * Shape: array of prompt ID => note text. Keys are validated as real prompt
+ * IDs, so a note cannot be attached to an arbitrary post, and empty notes are
+ * dropped rather than stored as blanks.
+ *
+ * @param mixed $value Raw notes map.
+ * @return array<int, string> Clean notes keyed by prompt ID.
+ */
+function promptatlas_sanitize_collection_notes( $value ) {
+	if ( ! is_array( $value ) ) {
+		return array();
+	}
+
+	$clean = array();
+
+	foreach ( $value as $prompt_id => $note ) {
+		$prompt_id = absint( $prompt_id );
+
+		if ( 0 === $prompt_id || 'prompt' !== get_post_type( $prompt_id ) ) {
+			continue;
+		}
+
+		if ( ! is_scalar( $note ) ) {
+			continue;
+		}
+
+		$note = sanitize_text_field( (string) $note );
+
+		if ( '' === $note ) {
+			continue;
+		}
+
+		$clean[ $prompt_id ] = $note;
+	}
+
+	return $clean;
+}
+
+/**
+ * Get a collection's per-entry notes.
+ *
+ * @param int $collection_id Collection ID.
+ * @return array<int, string> Notes keyed by prompt ID.
+ */
+function promptatlas_get_collection_notes( $collection_id ) {
+	$notes = get_post_meta( absint( $collection_id ), PROMPTATLAS_META_COLLECTION_NOTES, true );
+
+	return is_array( $notes ) ? $notes : array();
+}
+
+/**
  * Authorise reads and writes of PromptAtlas meta.
  *
  * Registered as the `auth_callback` for every field. This is the server-side
@@ -381,6 +443,20 @@ function promptatlas_register_meta() {
 	);
 
 	// --- collection --------------------------------------------------------
+
+	register_post_meta(
+		'collection',
+		PROMPTATLAS_META_COLLECTION_NOTES,
+		array(
+			'type'              => 'array',
+			'description'       => __( 'Editorial note per prompt in this collection, keyed by prompt ID.', 'promptatlas' ),
+			'single'            => true,
+			'default'           => array(),
+			'show_in_rest'      => false,
+			'sanitize_callback' => 'promptatlas_sanitize_collection_notes',
+			'auth_callback'     => 'promptatlas_meta_auth_callback',
+		)
+	);
 
 	register_post_meta(
 		'collection',
