@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="PromptAtlas">
+  <!--
+    The PromptAtlas mark.
+
+    Square brackets with a filled block between them. The brackets are the
+    placeholder convention used throughout the product — every prompt marks what
+    the reader must replace as [LIKE_THIS] — and the block is the thing you fill
+    in. It reads as "a prompt with a slot", which is what the site is for.
+
+    Built to stay legible at 16px: two strokes and one solid shape, with no
+    detail that disappears when scaled down.
+
+    Colours are fixed here because this file is also served as an icon, where
+    currentColor has nothing to inherit from. The in-page header uses an inline
+    copy that uses currentColor so it follows the theme.
+  -->
+  <path d="M12.5 4.5H7v23h5.5" fill="none" stroke="#8b2626" stroke-width="3.2" stroke-linecap="square"/>
+  <path d="M19.5 4.5H25v23h-5.5" fill="none" stroke="#8b2626" stroke-width="3.2" stroke-linecap="square"/>
+  <rect x="13.6" y="13.6" width="4.8" height="4.8" rx="1" fill="#ef6905"/>
+</svg>

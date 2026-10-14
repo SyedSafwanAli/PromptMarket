@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="PromptAtlas">
+  <!--
+    Favicon variant of the mark.
+
+    Differences from mark.svg, both deliberate:
+      1. A warm off-white rounded background, so the mark holds its own against
+         dark browser chrome as well as light. A transparent favicon disappears
+         on half of all setups.
+      2. Slightly tighter geometry and a heavier stroke, because at 16px the
+         open version loses its counters.
+  -->
+  <rect width="32" height="32" rx="6" fill="#fcfaf6"/>
+  <path d="M13 7H8.5v18H13" fill="none" stroke="#8b2626" stroke-width="3.6" stroke-linecap="square"/>
+  <path d="M19 7h4.5v18H19" fill="none" stroke="#8b2626" stroke-width="3.6" stroke-linecap="square"/>
+  <rect x="13.8" y="13.8" width="4.4" height="4.4" rx="1" fill="#ef6905"/>
+</svg>

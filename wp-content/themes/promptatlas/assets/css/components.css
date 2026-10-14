@@ -719,3 +719,31 @@ a.term-pill:hover {
 .prompt-block + .ad-slot {
 	margin-block-start: var(--space-3xl);
 }
+
+/* -------------------------------------------------------------------------
+   16. SITE MARK
+   The bracket mark beside the wordmark. Inherits currentColor, so it needs no
+   dark-mode variant — except the centre block, which is the one orange accent
+   and is set explicitly.
+   ------------------------------------------------------------------------- */
+
+.site-title__link {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-xs);
+	color: var(--color-primary);
+	text-decoration: none;
+}
+
+.site-title__link:hover .site-title__text {
+	text-decoration: underline;
+}
+
+.site-mark {
+	flex: 0 0 auto;
+	color: var(--color-primary);
+}
+
+.site-mark__slot {
+	fill: var(--color-accent);
+}

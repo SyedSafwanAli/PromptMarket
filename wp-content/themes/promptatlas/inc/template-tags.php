@@ -34,11 +34,14 @@ function promptatlas_site_branding() {
 		return;
 	}
 
-	printf(
-		'<div class="site-title"><a href="%1$s" rel="home">%2$s</a></div>',
-		esc_url( home_url( '/' ) ),
-		esc_html( get_bloginfo( 'name' ) )
-	);
+	?>
+	<div class="site-title">
+		<a class="site-title__link" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+			<?php promptatlas_mark( 26 ); ?>
+			<span class="site-title__text"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></span>
+		</a>
+	</div>
+	<?php
 }
 
 /**

@@ -28,5 +28,6 @@ define( 'PROMPTATLAS_THEME_URI', trailingslashit( get_template_directory_uri() )
 
 require_once PROMPTATLAS_THEME_DIR . 'inc/setup.php';
 require_once PROMPTATLAS_THEME_DIR . 'inc/assets.php';
+require_once PROMPTATLAS_THEME_DIR . 'inc/branding.php';
 require_once PROMPTATLAS_THEME_DIR . 'inc/template-tags.php';
 require_once PROMPTATLAS_THEME_DIR . 'inc/comments-off.php';
