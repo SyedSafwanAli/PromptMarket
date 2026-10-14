@@ -18,15 +18,11 @@
 
 defined( 'ABSPATH' ) || exit;
 
-/**
- * Keep the style reference out of search engines and out of the sitemap.
- *
- * @return void
+/*
+ * This template is noindex. The directive is NOT printed here: it is declared
+ * centrally in promptatlas_robots_directive() so that exactly one robots meta
+ * tag is emitted per page. Printing it here as well produced two.
  */
-function promptatlas_style_reference_noindex() {
-	echo '<meta name="robots" content="noindex, nofollow">' . "\n";
-}
-add_action( 'wp_head', 'promptatlas_style_reference_noindex', 1 );
 
 /**
  * Render a labelled swatch for a colour token.

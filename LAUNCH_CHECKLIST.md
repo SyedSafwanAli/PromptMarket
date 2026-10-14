@@ -20,6 +20,23 @@ Started: Phase 02, 2026-10-14.
 - [ ] Confirm `robots.txt` matches the AI/LLM crawler policy decided in Phase 01 item 7.
       *Deferred by: Phase 02 → owned by Phase 12.*
 
+### SEO, supplied only by the owner
+
+- [ ] **Google Search Console verification token.** Nothing is invented: the
+      verification meta tag appears only once a real token is saved at
+      **Prompts → SEO**. Until then the site is simply unverified.
+      *Deferred by: Phase 12 → Phase 18 configures it.*
+- [ ] Submit `wp-sitemap.xml` to Search Console after the domain is live.
+- [ ] **Re-check `robots.txt` on the real domain.** It could not be verified on
+      this install: WordPress serves a virtual robots.txt only from the site
+      root, and local development runs in the `/promptmarket/` subdirectory.
+      The generated content was verified directly through the filter and is
+      correct; only the serving path is untested.
+      *Deferred by: Phase 12.*
+- [ ] Confirm `llms.txt` resolves on the real domain (it works locally).
+- [ ] Re-run the structured data through Google's Rich Results Test once the
+      site is publicly reachable — it cannot fetch localhost.
+
 ### Configuration
 
 - [ ] Set `WP_ENVIRONMENT_TYPE` to `production`.

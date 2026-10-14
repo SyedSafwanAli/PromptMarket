@@ -207,52 +207,37 @@ function promptatlas_breadcrumbs() {
 		return;
 	}
 
-	$items = array(
-		array(
-			'label' => __( 'Home', 'promptatlas' ),
-			'url'   => home_url( '/' ),
-		),
-	);
+	/*
+	 * The trail comes from promptatlas_breadcrumb_data() in the plugin, which
+	 * also feeds the BreadcrumbList structured data in Phase 12. Sharing one
+	 * source means the markup can never describe a different trail from the one
+	 * on screen - and markup that disagrees with the page is a spam signal, not
+	 * a technicality.
+	 */
+	if ( ! function_exists( 'promptatlas_breadcrumb_data' ) ) {
+		return;
+	}
 
-	if ( is_singular( 'prompt' ) ) {
-		$items[] = array(
-			'label' => __( 'Prompts', 'promptatlas' ),
-			'url'   => get_post_type_archive_link( 'prompt' ),
-		);
+	$items = promptatlas_breadcrumb_data();
 
-		if ( function_exists( 'promptatlas_get_prompt_category' ) ) {
-			$term = promptatlas_get_prompt_category( (int) get_the_ID() );
-
-			if ( $term ) {
-				$items[] = array(
-					'label' => $term->name,
-					'url'   => get_term_link( $term ),
-				);
-			}
-		}
-	} elseif ( is_singular( 'collection' ) ) {
-		$items[] = array(
-			'label' => __( 'Collections', 'promptatlas' ),
-			'url'   => get_post_type_archive_link( 'collection' ),
-		);
-	} elseif ( is_tax( array( 'prompt_category', 'prompt_tool', 'prompt_tag' ) ) ) {
-		$items[] = array(
-			'label' => __( 'Prompts', 'promptatlas' ),
-			'url'   => get_post_type_archive_link( 'prompt' ),
-		);
+	if ( count( $items ) < 2 ) {
+		return;
 	}
 
 	?>
 	<nav class="breadcrumbs" aria-label="<?php esc_attr_e( 'Breadcrumb', 'promptatlas' ); ?>">
 		<ol class="breadcrumbs__list">
 			<?php foreach ( $items as $item ) : ?>
-				<li class="breadcrumbs__item">
-					<a href="<?php echo esc_url( (string) $item['url'] ); ?>"><?php echo esc_html( $item['label'] ); ?></a>
-				</li>
+				<?php if ( '' !== $item['url'] ) : ?>
+					<li class="breadcrumbs__item">
+						<a href="<?php echo esc_url( $item['url'] ); ?>"><?php echo esc_html( $item['label'] ); ?></a>
+					</li>
+				<?php else : ?>
+					<li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
+						<?php echo esc_html( $item['label'] ); ?>
+					</li>
+				<?php endif; ?>
 			<?php endforeach; ?>
-			<li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
-				<?php echo esc_html( promptatlas_current_page_label() ); ?>
-			</li>
 		</ol>
 	</nav>
 	<?php
