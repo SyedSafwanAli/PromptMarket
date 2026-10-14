@@ -1163,3 +1163,93 @@ a.term-pill:hover {
 .term-collections .prompt-single__meta-label {
 	margin-block-end: var(--space-2xs);
 }
+
+/* -------------------------------------------------------------------------
+   24. CONTACT FORM (Phase 13)
+   ------------------------------------------------------------------------- */
+
+.contact-form-wrap {
+	max-width: var(--width-prose);
+	margin-block-start: var(--space-xl);
+}
+
+.contact-form__field {
+	margin-block-end: var(--space-lg);
+}
+
+.contact-form__error {
+	display: block;
+	margin-block-start: var(--space-3xs);
+	color: var(--color-danger);
+	font-size: var(--text-sm);
+	font-weight: var(--weight-medium);
+}
+
+[aria-invalid="true"] {
+	border-color: var(--color-danger);
+}
+
+/* The honeypot. Positioned off-screen rather than display:none, because some
+   bots skip fields that are display:none. aria-hidden and tabindex="-1" in the
+   markup keep it away from assistive technology and the keyboard. */
+.contact-form__trap {
+	position: absolute;
+	left: -9999px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+/* -------------------------------------------------------------------------
+   25. NEWSLETTER SIGNUP (Phase 13)
+   Reserves its own space so it cannot shift the layout. Never a popup.
+   ------------------------------------------------------------------------- */
+
+.signup {
+	margin-block-start: var(--section-gap);
+	padding: var(--space-lg);
+	background-color: var(--color-surface-sunken);
+	border: var(--border-width) solid var(--color-border);
+	border-radius: var(--radius-lg);
+	max-width: var(--width-content);
+	min-height: 13rem;
+}
+
+.signup__title {
+	font-size: var(--text-xl);
+	margin-block-end: var(--space-2xs);
+}
+
+.signup__promise {
+	margin-block-end: var(--space-md);
+	color: var(--color-text-muted);
+	max-width: 56ch;
+}
+
+.signup__form {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-xs);
+	align-items: stretch;
+	max-width: 32rem;
+}
+
+.signup__input {
+	flex: 1 1 14rem;
+	min-width: 0;
+}
+
+.signup__small {
+	margin-block-start: var(--space-sm);
+	color: var(--color-text-faint);
+	font-size: var(--text-sm);
+	max-width: 56ch;
+}
+
+.signup .notice-message {
+	margin-block-end: var(--space-md);
+}
+
+.site-notice {
+	margin-block-start: var(--space-lg);
+}

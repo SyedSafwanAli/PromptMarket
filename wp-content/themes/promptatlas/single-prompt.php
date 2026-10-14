@@ -206,6 +206,8 @@ while ( have_posts() ) :
 			<?php endif; ?>
 		</aside>
 
+		<?php get_template_part( 'template-parts/newsletter' ); ?>
+
 	</main>
 
 	<?php

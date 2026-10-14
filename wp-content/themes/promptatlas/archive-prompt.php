@@ -71,6 +71,8 @@ $promptatlas_total = isset( $GLOBALS['wp_query']->found_posts ) ? (int) $GLOBALS
 
 	<?php endif; ?>
 
+	<?php get_template_part( 'template-parts/newsletter' ); ?>
+
 </main>
 
 <?php

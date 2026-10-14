@@ -47,6 +47,9 @@ require_once PROMPTATLAS_CORE_DIR . 'includes/search.php';
 require_once PROMPTATLAS_CORE_DIR . 'includes/search-log.php';
 require_once PROMPTATLAS_CORE_DIR . 'includes/rest.php';
 require_once PROMPTATLAS_CORE_DIR . 'includes/seo.php';
+require_once PROMPTATLAS_CORE_DIR . 'includes/mail.php';
+require_once PROMPTATLAS_CORE_DIR . 'includes/contact.php';
+require_once PROMPTATLAS_CORE_DIR . 'includes/newsletter.php';
 
 /**
  * Load the plugin text domain.
@@ -96,6 +99,9 @@ function promptatlas_activate() {
 	promptatlas_rebuild_all_search_blobs();
 	promptatlas_create_search_log_table();
 	promptatlas_schedule_search_log_prune();
+	promptatlas_schedule_message_prune();
+	promptatlas_create_subscribers_table();
+	promptatlas_schedule_subscriber_prune();
 
 	// Seed the alias list only on a first install, so an owner who has edited
 	// it does not have their edits overwritten on reactivation.
@@ -120,6 +126,8 @@ register_activation_hook( __FILE__, 'promptatlas_activate' );
  */
 function promptatlas_deactivate() {
 	promptatlas_unschedule_search_log_prune();
+	promptatlas_unschedule_message_prune();
+	promptatlas_unschedule_subscriber_prune();
 
 	flush_rewrite_rules();
 }

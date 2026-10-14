@@ -105,3 +105,31 @@ defined( 'ABSPATH' ) || exit;
 
 		</div>
 	</header>
+
+	<?php
+	/*
+	 * Site-wide notice region for newsletter confirm and unsubscribe results.
+	 *
+	 * Those links land on the homepage, where the signup block is not rendered,
+	 * so without this the visitor clicked "confirm", the database changed, and
+	 * they saw an ordinary homepage with no indication that anything happened.
+	 * The state is only ever set by those two actions, so this stays empty on
+	 * every normal page view.
+	 */
+	$promptatlas_notice = function_exists( 'promptatlas_get_signup_state' )
+		? promptatlas_get_signup_state()
+		: null;
+
+	if ( $promptatlas_notice && ( get_query_var( 'pa_confirm' ) || get_query_var( 'pa_unsubscribe' ) ) ) :
+		?>
+		<div class="container site-notice">
+			<p
+				class="notice-message notice-message--<?php echo esc_attr( 'success' === $promptatlas_notice['type'] ? 'success' : 'error' ); ?>"
+				role="status"
+			>
+				<?php echo esc_html( $promptatlas_notice['message'] ); ?>
+			</p>
+		</div>
+		<?php
+	endif;
+	?>

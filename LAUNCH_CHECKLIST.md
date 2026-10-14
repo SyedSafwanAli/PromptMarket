@@ -37,6 +37,27 @@ Started: Phase 02, 2026-10-14.
 - [ ] Re-run the structured data through Google's Rich Results Test once the
       site is publicly reachable — it cannot fetch localhost.
 
+### Email — nothing here is verified
+
+- [ ] **Send a real contact-form message end to end and confirm it arrives.**
+      Email delivery has NOT been verified at any point. On this machine
+      `wp_mail()` fails outright with `Invalid address: (From):
+      wordpress@localhost` — PHP has no `sendmail_path` and `SMTP=localhost:25`
+      has nothing listening. The message composition was verified (correct To,
+      Subject, plain-text body, and Reply-To carrying the sender rather than
+      the From), but **delivery is unverified**. *Deferred by: Phase 13.*
+- [ ] **Configure SMTP through a transactional provider** on the real domain,
+      with SPF, DKIM and DMARC. Credentials go in `wp-config.php` as
+      `PROMPTATLAS_SMTP_*` constants — never in the theme, the plugin, the
+      database or Git. The code reads them if defined and is a no-op if not,
+      so this is a deployment step, not a code change.
+- [ ] **Send a newsletter confirmation email and click the link from a real
+      inbox.** The confirm, reuse, invalid-token and unsubscribe paths are all
+      verified against the database, but no confirmation email has ever been
+      delivered.
+- [ ] Check the admin for the "email delivery is failing" warning after launch;
+      it appears automatically when `wp_mail()` fails.
+
 ### Configuration
 
 - [ ] Set `WP_ENVIRONMENT_TYPE` to `production`.
