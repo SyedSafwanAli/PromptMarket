@@ -1018,3 +1018,124 @@ a.term-pill:hover {
 	font-size: var(--text-sm);
 	max-width: 70ch;
 }
+
+/* -------------------------------------------------------------------------
+   22. SAVE CONTROL AND STORED LISTS (Phase 10)
+   ------------------------------------------------------------------------- */
+
+.prompt-block__actions {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2xs);
+}
+
+.save-button {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-3xs);
+	padding: var(--space-3xs) var(--space-sm);
+	min-height: 2.25rem;
+	background-color: transparent;
+	border: var(--border-width) solid var(--color-code-border);
+	border-radius: var(--radius-md);
+	color: var(--color-code-text);
+	font-size: var(--text-sm);
+	font-weight: var(--weight-medium);
+	transition:
+		background-color var(--duration-fast) var(--ease-out),
+		border-color var(--duration-fast) var(--ease-out);
+}
+
+.save-button:hover {
+	border-color: var(--color-highlight);
+	color: var(--color-highlight);
+}
+
+.save-button[data-state="saved"] {
+	background-color: var(--color-highlight);
+	border-color: var(--color-highlight);
+	color: var(--neutral-900);
+}
+
+/* Controls that cannot work without JavaScript are never shown as if they can. */
+.promptatlas-no-js .save-button,
+.promptatlas-no-js .js-list-clear {
+	display: none;
+}
+
+/* The inverse: a message that only matters when JavaScript is missing. */
+.js-required {
+	display: none;
+}
+
+.promptatlas-no-js .js-required {
+	display: block;
+	margin-block-end: var(--space-lg);
+}
+
+.stored-lists {
+	display: grid;
+	gap: var(--section-gap);
+	max-width: var(--width-content);
+}
+
+@media (min-width: 48em) {
+	.stored-lists {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-2xl);
+	}
+}
+
+.stored-list__empty {
+	color: var(--color-text-muted);
+	font-size: var(--text-sm);
+}
+
+.stored-list__items {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-block-start: var(--border-width) solid var(--color-border);
+}
+
+.stored-list__item {
+	display: grid;
+	gap: 2px;
+	padding-block: var(--space-sm);
+	border-block-end: var(--border-width) solid var(--color-border);
+}
+
+.stored-list__category {
+	color: var(--color-accent-text);
+	font-size: var(--text-xs);
+	font-weight: var(--weight-semibold);
+	letter-spacing: var(--tracking-wide);
+	text-transform: uppercase;
+}
+
+.stored-list__link {
+	color: var(--color-text);
+	font-weight: var(--weight-medium);
+	text-decoration: none;
+}
+
+.stored-list__link:hover {
+	color: var(--color-primary);
+	text-decoration: underline;
+}
+
+.stored-lists__privacy {
+	margin-block-start: var(--section-gap);
+	padding-block-start: var(--space-lg);
+	border-block-start: var(--border-width) solid var(--color-border);
+	max-width: var(--width-prose);
+	color: var(--color-text-muted);
+	font-size: var(--text-sm);
+}
+
+.prompt-block__note {
+	margin-block: calc(var(--space-lg) * -1 + var(--space-xs)) var(--space-lg);
+	color: var(--color-text-muted);
+	font-size: var(--text-sm);
+	max-width: 62ch;
+}

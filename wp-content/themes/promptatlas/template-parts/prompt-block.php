@@ -36,16 +36,30 @@ $promptatlas_copy_id = 'prompt-text-' . $promptatlas_block_post_id;
 <div class="prompt-block">
 	<div class="prompt-block__header">
 		<span class="prompt-block__label"><?php esc_html_e( 'Prompt', 'promptatlas' ); ?></span>
+		<div class="prompt-block__actions">
 		<button
 			type="button"
 			class="copy-button js-copy-button"
 			data-copy-target="<?php echo esc_attr( $promptatlas_copy_id ); ?>"
+			data-prompt-id="<?php echo esc_attr( (string) $promptatlas_block_post_id ); ?>"
 			data-label-default="<?php esc_attr_e( 'Copy prompt', 'promptatlas' ); ?>"
 			data-label-copied="<?php esc_attr_e( 'Copied', 'promptatlas' ); ?>"
 			data-label-failed="<?php esc_attr_e( 'Press Ctrl+C to copy', 'promptatlas' ); ?>"
 		>
 			<span class="js-copy-button-label"><?php esc_html_e( 'Copy prompt', 'promptatlas' ); ?></span>
 		</button>
+
+		<button
+			type="button"
+			class="save-button js-save-button"
+			aria-pressed="false"
+			data-prompt-id="<?php echo esc_attr( (string) $promptatlas_block_post_id ); ?>"
+			data-label-save="<?php esc_attr_e( 'Save', 'promptatlas' ); ?>"
+			data-label-saved="<?php esc_attr_e( 'Saved', 'promptatlas' ); ?>"
+		>
+			<span class="js-save-button-label"><?php esc_html_e( 'Save', 'promptatlas' ); ?></span>
+		</button>
+		</div>
 	</div>
 
 	<?php
@@ -66,3 +80,44 @@ $promptatlas_copy_id = 'prompt-text-' . $promptatlas_block_post_id;
 
 	<p class="prompt-block__status" role="status" aria-live="polite"></p>
 </div>
+
+<?php
+/*
+ * Decision, which Phase 10 requires to be stated and made obvious: COPY
+ * DELIVERS THE RAW PROMPT, placeholders included.
+ *
+ * The alternative - a form that fills the placeholders before copying - was
+ * rejected. It would turn a one-click action into a form to complete, and its
+ * real failure mode is worse: a visitor who skips a field silently copies a
+ * prompt containing an empty or half-filled slot and never notices. Leaving
+ * [JOB_TITLE] visible in the pasted text is self-evident; a blank where it
+ * should have been is not.
+ *
+ * The placeholders are highlighted in the block above, this line says so
+ * explicitly, and the "What to replace" section below explains each one.
+ */
+$promptatlas_block_vars = function_exists( 'promptatlas_get_variables' )
+	? promptatlas_get_variables( $promptatlas_block_post_id )
+	: array();
+
+if ( ! empty( $promptatlas_block_vars ) ) :
+	?>
+	<p class="prompt-block__note">
+		<?php
+		printf(
+			esc_html(
+				/* translators: %s: the number of placeholders in the prompt. */
+				_n(
+					'Copies exactly as shown, including the %s highlighted placeholder — replace it before you use the prompt.',
+					'Copies exactly as shown, including the %s highlighted placeholders — replace them before you use the prompt.',
+					count( $promptatlas_block_vars ),
+					'promptatlas'
+				)
+			),
+			esc_html( number_format_i18n( count( $promptatlas_block_vars ) ) )
+		);
+		?>
+	</p>
+	<?php
+endif;
+?>

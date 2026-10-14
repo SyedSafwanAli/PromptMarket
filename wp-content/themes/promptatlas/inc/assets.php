@@ -85,12 +85,12 @@ function promptatlas_enqueue_assets() {
 	 * on the page — exactly the "do not enqueue an asset the page does not use"
 	 * rule from Phase 06.
 	 */
-	if ( is_singular( 'prompt' ) ) {
+	if ( is_singular( 'prompt' ) || is_page_template( 'template-my-prompts.php' ) ) {
 		wp_enqueue_script(
-			'promptatlas-copy',
-			PROMPTATLAS_THEME_URI . 'assets/js/copy.js',
+			'promptatlas-prompt-tools',
+			PROMPTATLAS_THEME_URI . 'assets/js/prompt-tools.js',
 			array(),
-			promptatlas_asset_version( 'assets/js/copy.js' ),
+			promptatlas_asset_version( 'assets/js/prompt-tools.js' ),
 			array(
 				'strategy'  => 'defer',
 				'in_footer' => true,

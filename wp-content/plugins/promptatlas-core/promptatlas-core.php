@@ -45,6 +45,7 @@ require_once PROMPTATLAS_CORE_DIR . 'includes/search-index.php';
 require_once PROMPTATLAS_CORE_DIR . 'includes/search-aliases.php';
 require_once PROMPTATLAS_CORE_DIR . 'includes/search.php';
 require_once PROMPTATLAS_CORE_DIR . 'includes/search-log.php';
+require_once PROMPTATLAS_CORE_DIR . 'includes/rest.php';
 
 /**
  * Load the plugin text domain.
