@@ -23,6 +23,7 @@ exact next step. Update it after every phase.
 | 12 — Technical SEO | **Complete** | 2026-10-14 | Meta, OG, structured data, sitemap, robots + llms.txt. |
 | 13 — Contact and newsletter | **Complete** | 2026-10-14 | Custom form, double opt-in. **Email delivery unverified.** |
 | 14 — Roles and operations | Not started | — | **Next.** |
+| 19 — Launch content | **Partially done, out of order** | 2026-10-15 | 24 prompts + 3 collections written early so the design could be reviewed with real content. **None test-run against a model.** |
 | 15–25 | Not started | — | — |
 
 > **Note on ordering.** Phase 02 ran before Phase 01 at the owner's instruction. Phase 01 was

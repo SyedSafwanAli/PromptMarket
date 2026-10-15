@@ -87,10 +87,14 @@ Started: Phase 02, 2026-10-14.
 
 ### Content
 
-- [ ] **Test-run every published prompt against a real model.** `CONTENT_STRATEGY.md` 6.4 requires
-      it, and the two prompts created in Phase 05 (#6 and #7) are published locally **without
-      having been run**. Either test them and add real example output, or unpublish them.
-      *Deferred by: Phase 05.*
+- [ ] **Test-run all 26 published prompts against a real model.** `CONTENT_STRATEGY.md` 6.4
+      requires every prompt to be run before publishing, and **none of them have been**. They are
+      original, written for this site, and published locally only (the site is `noindex` on
+      localhost), but each one needs to be run once and checked before the site is public.
+      Add real example output where it is worth showing, and fix or drop anything that does not
+      work as described. *Deferred by: Phase 05, extended when the launch batch was written.*
+- [ ] Add a featured image, or confirm the typographic card fallback is acceptable, for each
+      prompt. None currently have one.
 - [ ] Delete the default WordPress sample content: the "Hello world!" post and the "Sample Page"
       page. *Deferred by: Phase 02 — left in place deliberately so nothing was deleted without
       approval.*
