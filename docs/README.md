@@ -87,9 +87,9 @@ Update this table as you complete each phase.
 | 14 | Not started | | |
 | 15 | Not started | | |
 | 16 | Not started | | |
-| 17 | Not started | | |
+| 17 | Complete | 2026-10-15 | 6 policy pages written from the implementation. Consent decision recorded. |
 | 18 | Not started | | |
-| 19 | Not started | | |
+| 19 | Content complete | 2026-10-15 | 48 prompts, 4 collections, 52 images. Run out of order. Untested against a model. |
 | 20 | Not started | | |
 | 21 | Not started | | |
 | 22 | Not started | | |
