@@ -31,17 +31,108 @@ $promptatlas_recent = new WP_Query(
 
 <main id="primary" class="site-main" role="main">
 
-	<section class="home-intro">
-		<div class="container home-intro__inner">
-			<h1 class="home-intro__title">
-				<?php esc_html_e( 'Find a prompt that actually works', 'promptatlas' ); ?>
-			</h1>
-			<p class="home-intro__lead">
-				<?php esc_html_e( 'A growing, hand-written library of AI prompts — each one explained, so you know what to change and why it works.', 'promptatlas' ); ?>
-			</p>
-			<div class="home-intro__search">
-				<?php get_search_form(); ?>
+	<?php
+	/*
+	 * The hero.
+	 *
+	 * Asymmetric on purpose. The previous version was a narrow centred column
+	 * in a full-width band, which left most of the viewport empty and made the
+	 * page read as a document rather than a product. The headline now anchors
+	 * the left, and real artwork from the library fills the right - so the
+	 * first thing a visitor sees is what the site actually contains.
+	 */
+	$promptatlas_hero_art = get_posts(
+		array(
+			'post_type'           => 'prompt',
+			'post_status'         => 'publish',
+			'posts_per_page'      => 4,
+			'orderby'             => 'rand',
+			'ignore_sticky_posts' => true,
+			'no_found_rows'       => true,
+			'meta_key'            => '_thumbnail_id', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Four rows on one page, and the alternative is rendering empty frames.
+		)
+	);
+
+	$promptatlas_hero_terms = get_terms(
+		array(
+			'taxonomy'   => 'prompt_category',
+			'hide_empty' => true,
+			'number'     => 6,
+			'orderby'    => 'count',
+			'order'      => 'DESC',
+		)
+	);
+	?>
+
+	<section class="hero">
+		<div class="container hero__inner">
+
+			<div class="hero__text">
+				<h1 class="hero__title">
+					<?php
+					printf(
+						/* translators: %s: the phrase "actually works", styled as an accent. */
+						esc_html__( 'Find a prompt that %s', 'promptatlas' ),
+						'<span class="hero__accent">' . esc_html__( 'actually works', 'promptatlas' ) . '</span>'
+					);
+					?>
+				</h1>
+
+				<p class="hero__lead">
+					<?php esc_html_e( 'A hand-written library of AI prompts — each one explained, so you know what to change and why it works.', 'promptatlas' ); ?>
+				</p>
+
+				<div class="hero__search">
+					<?php get_search_form(); ?>
+				</div>
+
+				<?php if ( ! is_wp_error( $promptatlas_hero_terms ) && ! empty( $promptatlas_hero_terms ) ) : ?>
+					<div class="hero__chips">
+						<span class="hero__chips-label"><?php esc_html_e( 'Popular:', 'promptatlas' ); ?></span>
+						<ul class="chip-row">
+							<?php foreach ( $promptatlas_hero_terms as $promptatlas_hero_term ) : ?>
+								<li>
+									<a class="chip" href="<?php echo esc_url( (string) get_term_link( $promptatlas_hero_term ) ); ?>">
+										<?php echo esc_html( $promptatlas_hero_term->name ); ?>
+									</a>
+								</li>
+							<?php endforeach; ?>
+						</ul>
+					</div>
+				<?php endif; ?>
 			</div>
+
+			<?php if ( ! empty( $promptatlas_hero_art ) ) : ?>
+				<?php
+				/*
+				 * Decorative collage of real prompt artwork. Hidden from
+				 * assistive technology: it repeats nothing and describing four
+				 * abstract compositions would be noise. Not a link either -
+				 * the grid below is the way in.
+				 */
+				?>
+				<div class="hero__art" aria-hidden="true">
+					<?php foreach ( $promptatlas_hero_art as $promptatlas_hero_post ) : ?>
+						<?php if ( has_post_thumbnail( $promptatlas_hero_post ) ) : ?>
+							<div class="hero__art-tile">
+								<?php
+								echo get_the_post_thumbnail(
+									$promptatlas_hero_post,
+									'promptatlas-card',
+									array(
+										'loading' => 'eager',
+										'alt'     => '',
+										'width'   => 640,
+										'height'  => 360,
+									)
+								);
+								?>
+							</div>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
+
 		</div>
 	</section>
 

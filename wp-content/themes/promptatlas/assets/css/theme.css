@@ -535,40 +535,6 @@ hr {
 }
 
 /* -------------------------------------------------------------------------
-   12. HOMEPAGE INTRO
-   ------------------------------------------------------------------------- */
-
-.home-intro {
-	padding-block: var(--section-gap);
-	border-block-end: var(--border-width) solid var(--color-border);
-	background-color: var(--color-surface-sunken);
-}
-
-.home-intro__inner {
-	max-width: var(--width-prose);
-}
-
-.home-intro__title {
-	margin-block-end: var(--space-sm);
-}
-
-.home-intro__lead {
-	font-size: var(--text-lg);
-	color: var(--color-text-muted);
-	max-width: 46ch;
-}
-
-.home-intro__search {
-	margin-block-start: var(--space-lg);
-	max-width: 30rem;
-}
-
-/* The homepage supplies its own top spacing via .home-intro. */
-.home .site-main {
-	padding-block-start: 0;
-}
-
-/* -------------------------------------------------------------------------
    13. REDUCED MOTION
    Honour the preference globally rather than per-component, so nothing can be
    missed. Durations go to ~0 instead of 0 because some browsers skip

@@ -19,7 +19,7 @@
 	padding: var(--space-xs) var(--space-md);
 	min-height: 2.75rem; /* 44px: comfortable touch target */
 	border: var(--border-width) solid transparent;
-	border-radius: var(--radius-md);
+	border-radius: var(--radius-control);
 	font-size: var(--text-base);
 	font-weight: var(--weight-semibold);
 	line-height: 1.2;
@@ -104,7 +104,7 @@ select {
 	min-height: 2.75rem;
 	background-color: var(--color-surface);
 	border: var(--border-width) solid var(--color-border-control);
-	border-radius: var(--radius-md);
+	border-radius: var(--radius-control);
 	color: var(--color-text);
 	font-size: var(--text-base);
 }
@@ -113,6 +113,8 @@ textarea {
 	min-height: 8rem;
 	resize: vertical;
 	line-height: var(--leading-normal);
+	/* A pill textarea looks wrong; keep the softer rectangle. */
+	border-radius: var(--radius-lg);
 }
 
 input::placeholder,
@@ -141,13 +143,34 @@ label {
 
 .search-form {
 	display: flex;
-	align-items: stretch;
+	align-items: center;
 	gap: var(--space-2xs);
+	/* One pill containing the field and the button, rather than two separate
+	   rectangles sitting beside each other. */
+	padding: 4px 4px 4px var(--space-md);
+	background-color: var(--color-surface);
+	border: var(--border-width) solid var(--color-border-control);
+	border-radius: var(--radius-control);
+	transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.search-form:focus-within {
+	border-color: var(--color-primary);
 }
 
 .search-form__input {
 	flex: 1 1 auto;
 	min-width: 0; /* lets the flex item shrink below its content width */
+	/* The wrapper is the control now, so the field itself is bare. */
+	background: none;
+	border: 0;
+	border-radius: 0;
+	padding: 0;
+	min-height: 2.25rem;
+}
+
+.search-form__input:focus {
+	outline: none;
 }
 
 .search-form__submit {
@@ -155,11 +178,11 @@ label {
 	align-items: center;
 	justify-content: center;
 	flex: 0 0 auto;
-	width: 2.75rem;
-	min-height: 2.75rem;
+	width: 2.5rem;
+	height: 2.5rem;
 	background-color: var(--color-primary);
-	border: var(--border-width) solid var(--color-primary);
-	border-radius: var(--radius-md);
+	border: 0;
+	border-radius: var(--radius-control);
 	color: var(--color-on-primary);
 	transition: background-color var(--duration-fast) var(--ease-out);
 }
@@ -188,7 +211,7 @@ label {
 	flex: 0 0 auto;
 	background-color: transparent;
 	border: var(--border-width) solid var(--color-border-control);
-	border-radius: var(--radius-md);
+	border-radius: var(--radius-control);
 	color: var(--color-text);
 	transition:
 		border-color var(--duration-fast) var(--ease-out),
@@ -1445,4 +1468,208 @@ a.term-pill:hover {
 	color: var(--neutral-900);
 	font-size: var(--text-sm);
 	font-weight: var(--weight-semibold);
+}
+
+
+/* -------------------------------------------------------------------------
+   27. HERO (redesign)
+   Asymmetric: the headline anchors the left, real artwork fills the right.
+   The previous centred column left most of the viewport empty, which is what
+   made the page read as a document rather than a product.
+   ------------------------------------------------------------------------- */
+
+.hero {
+	padding-block: clamp(2.5rem, 1rem + 5vw, 5.5rem);
+	background-color: var(--color-bg);
+	border-block-end: var(--border-width) solid var(--color-border);
+	overflow: hidden;
+}
+
+.hero__inner {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--space-2xl);
+	align-items: center;
+}
+
+@media (min-width: 62em) {
+	.hero__inner {
+		/* The text column is wider: the artwork is support, not the subject. */
+		grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+		gap: var(--space-3xl);
+	}
+}
+
+.hero__title {
+	font-size: var(--text-display);
+	line-height: 1.04;
+	letter-spacing: -0.03em;
+	font-weight: var(--weight-bold);
+	margin-block-end: var(--space-md);
+	max-width: 14ch;
+	text-wrap: balance;
+}
+
+.hero__accent {
+	color: var(--color-primary);
+}
+
+.hero__lead {
+	font-size: var(--text-lg);
+	color: var(--color-text-muted);
+	max-width: 46ch;
+	margin-block-end: var(--space-xl);
+}
+
+.hero__search {
+	max-width: 34rem;
+}
+
+/* The hero search is the page's primary action, so it is physically larger
+   than the one in the header rather than the same control repeated. */
+.hero__search .search-form {
+	padding: 6px 6px 6px var(--space-lg);
+	border-width: 2px;
+	box-shadow: var(--shadow-md);
+}
+
+.hero__search .search-form__input {
+	min-height: 2.75rem;
+	font-size: var(--text-md);
+}
+
+.hero__search .search-form__submit {
+	width: 3rem;
+	height: 3rem;
+}
+
+.hero__chips {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: var(--space-xs);
+	margin-block-start: var(--space-lg);
+}
+
+.hero__chips-label {
+	color: var(--color-text-faint);
+	font-size: var(--text-sm);
+	font-weight: var(--weight-medium);
+}
+
+.chip-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--space-2xs);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.chip {
+	display: inline-block;
+	padding: var(--space-3xs) var(--space-sm);
+	background-color: var(--color-surface);
+	/* A chip is an interactive control, so its boundary must meet 3:1 under
+	   WCAG 2.2 SC 1.4.11. The decorative --color-border-strong measures
+	   1.61:1 on white and is wrong here; --color-border-control is 3.80:1. */
+	border: var(--border-width) solid var(--color-border-control);
+	border-radius: var(--radius-control);
+	color: var(--color-text);
+	font-size: var(--text-sm);
+	text-decoration: none;
+	white-space: nowrap;
+	transition:
+		border-color var(--duration-fast) var(--ease-out),
+		color var(--duration-fast) var(--ease-out);
+}
+
+.chip:hover {
+	border-color: var(--color-primary);
+	color: var(--color-primary);
+}
+
+/* --- the artwork collage ------------------------------------------------ */
+
+.hero__art {
+	display: none;
+}
+
+@media (min-width: 62em) {
+	.hero__art {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-md);
+		/* Rotated very slightly so the block reads as a deliberate arrangement
+		   rather than a second content grid competing with the one below. */
+		transform: rotate(-2deg);
+	}
+
+	.hero__art-tile {
+		aspect-ratio: 4 / 3;
+		border-radius: var(--radius-media);
+		overflow: hidden;
+		background-color: var(--color-media-placeholder);
+	}
+
+	/* Offset the second column so the collage is staggered, not a neat 2x2. */
+	.hero__art-tile:nth-child(2n) {
+		transform: translateY(var(--space-xl));
+	}
+
+	.hero__art-tile img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hero__art {
+		transform: none;
+	}
+
+	.hero__art-tile:nth-child(2n) {
+		transform: none;
+	}
+}
+
+/* -------------------------------------------------------------------------
+   28. HEADER (redesign)
+   ------------------------------------------------------------------------- */
+
+.site-header {
+	background-color: var(--color-bg);
+	border-block-end: var(--border-width) solid var(--color-border);
+}
+
+.site-header__inner {
+	padding-block: var(--space-md);
+	gap: var(--space-lg);
+}
+
+.site-title {
+	font-size: var(--text-lg);
+	letter-spacing: -0.02em;
+}
+
+.site-header__actions .search-form {
+	width: min(18rem, 100%);
+}
+
+/* Section headings carry the same tightened display treatment as the hero, so
+   the page reads as one system rather than a hero bolted onto a document. */
+.section-header__title,
+.page-title {
+	letter-spacing: -0.025em;
+}
+
+.page-title {
+	font-size: var(--text-3xl);
+}
+
+/* The homepage supplies its own top spacing via the hero. */
+.home .site-main {
+	padding-block-start: var(--section-gap);
 }
