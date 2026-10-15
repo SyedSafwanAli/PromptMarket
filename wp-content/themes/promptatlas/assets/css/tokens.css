@@ -132,6 +132,9 @@
 
 	/* The prompt block: the most important surface on the site. Deliberately
 	   darker than the page so the copyable text reads as a distinct object. */
+	/* Shown behind artwork until it loads. */
+	--color-media-placeholder: var(--neutral-100);
+
 	--color-code-bg:         var(--neutral-900);
 	--color-code-text:       var(--neutral-100);
 	--color-code-border:     var(--neutral-700);
@@ -204,8 +207,12 @@
 	--width-prose:     42rem;  /* ~68 characters: the readable measure */
 	--width-content:   62rem;
 	--width-wide:      76rem;
-	--gutter:          clamp(1rem, 0.5rem + 2.5vw, 2rem);
+	--gutter:          clamp(1rem, 0.5rem + 2.5vw, 4rem);
 	--grid-gap:        var(--space-lg);
+	/* The card grid uses a wider, equal gap in both directions so the artwork
+	   reads as a gallery rather than a table. */
+	--grid-col-gap:    clamp(1.25rem, 0.5rem + 1.8vw, 2.25rem);
+	--grid-row-gap:    clamp(1.75rem, 0.75rem + 2.2vw, 2.25rem);
 	--section-gap:     clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
 
 	/* ---------------------------------------------------------------------
@@ -220,6 +227,9 @@
 	--radius-md:    5px;
 	--radius-lg:    8px;
 	--radius-pill:  999px;
+	/* Artwork corners. Larger than the UI radii on purpose: this is the one
+	   place the design wants a soft edge. */
+	--radius-media: 12px;
 
 	/* ---------------------------------------------------------------------
 	   7. FOCUS
@@ -313,6 +323,8 @@
 
 		--color-focus:           var(--brand-orange-light);
 
+		--color-media-placeholder: var(--neutral-800);
+
 		--color-code-bg:         #100e0a;
 		--color-code-text:       #e8e2d6;
 		--color-code-border:     #37322a;
@@ -364,6 +376,8 @@
 	--color-link-hover:      var(--brand-orange-light);
 
 	--color-focus:           var(--brand-orange-light);
+
+	--color-media-placeholder: var(--neutral-800);
 
 	--color-code-bg:         #100e0a;
 	--color-code-text:       #e8e2d6;

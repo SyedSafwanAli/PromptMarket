@@ -84,8 +84,19 @@ function promptatlas_enqueue_assets() {
 	 * homepage and every archive would be bytes parsed for a control that is not
 	 * on the page — exactly the "do not enqueue an asset the page does not use"
 	 * rule from Phase 06.
+	 *
+	 * Since the card grid gained a save button, "where a control exists" now
+	 * includes every listing that renders prompt cards. It is still not loaded
+	 * on a plain page or a 404, which have neither.
 	 */
-	if ( is_singular( 'prompt' ) || is_page_template( 'template-my-prompts.php' ) ) {
+	$promptatlas_needs_tools = is_singular( 'prompt' )
+		|| is_page_template( 'template-my-prompts.php' )
+		|| is_post_type_archive( array( 'prompt', 'collection' ) )
+		|| is_tax( array( 'prompt_category', 'prompt_tool', 'prompt_tag' ) )
+		|| is_search()
+		|| is_front_page();
+
+	if ( $promptatlas_needs_tools ) {
 		wp_enqueue_script(
 			'promptatlas-prompt-tools',
 			PROMPTATLAS_THEME_URI . 'assets/js/prompt-tools.js',

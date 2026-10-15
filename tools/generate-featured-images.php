@@ -332,6 +332,7 @@ function promptatlas_attach_image( $post_id, $path, $title, $kicker ) {
 				continue;
 			}
 
+			// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- A derived size that is not a readable PNG should be skipped, not fatal; imagecreatefrompng emits a warning rather than returning cleanly.
 			$img = @imagecreatefrompng( $size_path );
 
 			if ( ! $img ) {
