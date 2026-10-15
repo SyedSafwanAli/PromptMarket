@@ -54,14 +54,14 @@ require_once ABSPATH . 'wp-admin/includes/media.php';
  */
 function promptatlas_category_colours() {
 	return array(
-		'writing-editing'       => array( 0x8b, 0x26, 0x26 ), // burgundy
-		'marketing-content'     => array( 0xef, 0x69, 0x05 ), // orange
-		'business-strategy'     => array( 0x48, 0x6c, 0x2f ), // olive
-		'coding-development'    => array( 0x6d, 0x1d, 0x1d ), // burgundy deep
-		'career-job-search'     => array( 0x8f, 0x3e, 0x02 ), // orange deep
-		'education-study'       => array( 0x35, 0x51, 0x1f ), // olive deep
-		'image-video'           => array( 0x6b, 0x5d, 0x10 ), // butter deep
-		'productivity-personal' => array( 0x4c, 0x46, 0x3d ), // warm neutral
+		'writing-editing'       => array( 0x8b, 0x26, 0x26 ), // Burgundy.
+		'marketing-content'     => array( 0xef, 0x69, 0x05 ), // Orange.
+		'business-strategy'     => array( 0x48, 0x6c, 0x2f ), // Olive.
+		'coding-development'    => array( 0x6d, 0x1d, 0x1d ), // Burgundy deep.
+		'career-job-search'     => array( 0x8f, 0x3e, 0x02 ), // Orange deep.
+		'education-study'       => array( 0x35, 0x51, 0x1f ), // Olive deep.
+		'image-video'           => array( 0x6b, 0x5d, 0x10 ), // Butter deep.
+		'productivity-personal' => array( 0x4c, 0x46, 0x3d ), // Warm neutral.
 	);
 }
 
