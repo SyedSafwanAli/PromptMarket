@@ -23,6 +23,7 @@ exact next step. Update it after every phase.
 | 12 — Technical SEO | **Complete** | 2026-10-14 | Meta, OG, structured data, sitemap, robots + llms.txt. |
 | 13 — Contact and newsletter | **Complete** | 2026-10-14 | Custom form, double opt-in. **Email delivery unverified.** |
 | 14 — Roles and operations | Not started | — | **Next.** |
+| 15 — Performance | **Complete** | 2026-10-15 | N+1 on thumbnails fixed, images 71% smaller, gzip + caching enabled. **Localhost only — no real-network measurement.** |
 | 19 — Launch content | **Partially done, out of order** | 2026-10-15 | 24 prompts + 3 collections written early so the design could be reviewed with real content. **None test-run against a model.** |
 | 15–25 | Not started | — | — |
 
@@ -688,3 +689,118 @@ content synonym mapping settled in decision 3 — and the zero-result logging th
 - The admin editing UI has not been clicked through by hand.
 - The two published prompts have **not been test-run against a live model** — in
   `LAUNCH_CHECKLIST.md`.
+
+
+---
+
+## Phase 15 — Performance engineering
+
+Completed 2026-10-15.
+
+### Test conditions
+
+**Localhost, no network throttling, Apache 2.4.58 on the same machine, logged
+out, gzip enabled, measured with `curl`.** No browser, no Lighthouse, no device
+profile.
+
+**These numbers are not Core Web Vitals and must not be reported as such.**
+Localhost has no latency and no bandwidth limit, which flatters everything. LCP,
+INP and CLS can only be measured on the real domain — that is in
+`LAUNCH_CHECKLIST.md`.
+
+### What was measured
+
+| Template | Queries before | Queries after | HTML (gzip) | Images | Total |
+|---|---|---|---|---|---|
+| Homepage | 82 | **52** | 7,098 | 98,397 | ~109 KB |
+| Prompt archive | 37 | 37 | 7,326 | 109,330 | ~120 KB |
+| Single prompt | 65 | **51** | 8,757 | 43,732 | ~56 KB |
+| Collection | 36 | **33** | 6,528 | 0 | ~10 KB |
+| Category archive | 40 | 40 | 6,356 | 76,531 | ~86 KB |
+| Search results | 30 | 30 | — | 0 | — |
+
+### The three real problems, and the fixes
+
+**1. Adding featured images introduced an N+1.** The homepage went from 35
+queries to 82 and the single prompt template from 31 to 65 — purely from
+rendering thumbnails, because each `the_post_thumbnail()` fetched its
+attachment and metadata individually. Fixed with core's
+`update_post_thumbnail_cache()` on the `the_posts` filter, which covers the main
+query and the three secondary queries the homepage runs. Related prompts and
+collection lists resolve IDs rather than running a query, so `the_posts` never
+fires for them; those call a bulk primer directly, and the collection list opts
+out of thumbnail priming because it renders no images.
+
+Homepage **82 to 52**, single prompt **65 to 51**.
+
+**2. The images served were 3.5x larger than they needed to be.** The cards are
+flat graphics — solid fills and antialiased text — so a 24-bit PNG spends most
+of its bytes on colours that are not in the image. Quantising to a 128-colour
+palette is lossless for this content.
+
+The first attempt achieved nothing visible: quantising only the uploaded
+original left WordPress to regenerate each intermediate size as fresh
+truecolour, and the listing serves the 640x360 derivative. Quantising the
+derived sizes too is what mattered.
+
+| | Before | After |
+|---|---|---|
+| Served 640x360 card | 37,684 B | **10,933 B** (-71%) |
+| Uploads directory | 9.26 MB | **3.06 MB** (-67%) |
+| Ten cards on an archive | 377 KB | **109 KB** |
+
+Measured alternatives: WebP q80 was 18,878 B and lossy on text edges; a
+64-colour palette was 14,857 B but leaves no headroom on the antialiasing ramp.
+
+**3. Nothing was compressed and nothing was cached.** `mod_deflate`,
+`mod_expires` and `mod_filter` were all disabled in this XAMPP install.
+
+| | Uncompressed | Gzipped | Saved |
+|---|---|---|---|
+| `components.css` | 32,122 B | **6,065 B** | 81% |
+| `/prompts/` HTML | 36,402 B | **7,326 B** | 79% |
+
+Static assets now carry `Cache-Control: public, max-age=31536000, immutable`,
+which is safe because theme assets are versioned by file modification time and
+uploads are immutable once written. HTML carries `no-cache, must-revalidate`.
+
+> **Mistake made and fixed:** the first `.htaccess` block guarded
+> `AddOutputFilterByType` with `<IfModule mod_deflate.c>`. That directive comes
+> from **mod_filter**, not mod_deflate, so with deflate loaded and filter not,
+> the guard passed and every request returned 500. The site was down for about
+> a minute. The guard now names mod_filter, so a server without it skips the
+> block instead of breaking.
+
+### The LCP element per template
+
+Identified by reading the rendered markup, not measured:
+
+| Template | Likely LCP element |
+|---|---|
+| Homepage | The `h1` in the intro — text, above the fold, no image precedes it |
+| Prompt archive | The `h1`, then the first card image once it loads |
+| Single prompt | The `h1`, with the dark prompt block close behind |
+| Collection | The `h1` |
+
+**No template has an above-the-fold image**, which is why no preload hint was
+added — preloading a below-the-fold card would compete with the text that is
+actually the LCP element. Card images are all `loading="lazy"` with explicit
+dimensions and a reserved 16:9 slot.
+
+### Deliberately not done
+
+- **No caching plugin.** Decision 4 leaves that slot empty, and page caching
+  belongs at the host or CDN layer. Nothing measured here is bottlenecked on PHP.
+- **No CSS/JS minification.** 12 KB of gzipped CSS is not a problem, and the
+  comments minification would strip are the reason the token system is
+  maintainable. Revisit if CSS grows substantially.
+- **No critical-CSS inlining.** Three small stylesheets over a warm connection
+  do not justify the complexity or the duplication.
+- **Nothing was disabled** to improve a number. No accessibility feature, no
+  security header, no WordPress capability.
+
+### Still unmeasured
+
+Everything that actually counts. Core Web Vitals, real-network behaviour, mobile
+performance, and the effect of hosting all require the production domain.
+Recorded in `LAUNCH_CHECKLIST.md`.

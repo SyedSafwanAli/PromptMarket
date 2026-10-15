@@ -172,6 +172,12 @@ while ( have_posts() ) :
 		 * filler.
 		 */
 		?>
+		<?php
+		// One bulk load instead of several queries per card.
+		if ( ! empty( $promptatlas_related ) && function_exists( 'promptatlas_prime_posts' ) ) {
+			promptatlas_prime_posts( $promptatlas_related );
+		}
+		?>
 		<aside class="related" aria-labelledby="related-heading">
 			<h2 id="related-heading" class="section-header__title"><?php esc_html_e( 'Related prompts', 'promptatlas' ); ?></h2>
 

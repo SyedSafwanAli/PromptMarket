@@ -58,6 +58,21 @@ Started: Phase 02, 2026-10-14.
 - [ ] Check the admin for the "email delivery is failing" warning after launch;
       it appears automatically when `wp_mail()` fails.
 
+### Performance — nothing here reflects real conditions
+
+- [ ] **Measure Core Web Vitals on the real domain.** Everything recorded in
+      Phase 15 is localhost with no latency and no bandwidth limit, which
+      flatters every number. LCP, INP and CLS are meaningless until measured on
+      production. Use Lighthouse, and the Search Console Core Web Vitals report
+      once there is traffic.
+- [ ] **Confirm the host has gzip or brotli and sensible cache headers.** They
+      were disabled in local XAMPP and had to be switched on; a host may differ.
+      The `.htaccess` blocks are not tracked in Git — carry them over.
+- [ ] Decide on page caching at the host or CDN layer (decision 4 leaves the
+      plugin slot deliberately empty).
+- [ ] Re-check image weight after any theme change that alters the registered
+      image sizes.
+
 ### Configuration
 
 - [ ] Set `WP_ENVIRONMENT_TYPE` to `production`.

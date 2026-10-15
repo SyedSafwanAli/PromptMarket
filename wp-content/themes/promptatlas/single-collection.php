@@ -69,6 +69,11 @@ while ( have_posts() ) :
 
 		</article>
 
+		<?php
+		if ( ! empty( $promptatlas_prompts ) && function_exists( 'promptatlas_prime_posts' ) ) {
+			promptatlas_prime_posts( $promptatlas_prompts, false );
+		}
+		?>
 		<section class="collection-prompts" aria-labelledby="collection-prompts-heading">
 			<h2 id="collection-prompts-heading" class="section-header__title">
 				<?php esc_html_e( 'Prompts in this collection', 'promptatlas' ); ?>

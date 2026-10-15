@@ -180,6 +180,17 @@ function promptatlas_get_collection_prompts( $collection_id ) {
 		return array();
 	}
 
+	/*
+	 * The loop below calls get_post_status() per ID. Uncached, that is one
+	 * query each - and the homepage renders several collection cards, so it
+	 * added up quickly. One bulk load makes the whole loop free.
+	 */
+	$ids = array_values( array_filter( array_map( 'absint', $prompt_ids ) ) );
+
+	if ( ! empty( $ids ) ) {
+		_prime_post_caches( $ids, false, false );
+	}
+
 	$published = array();
 
 	foreach ( $prompt_ids as $prompt_id ) {
@@ -329,4 +340,77 @@ function promptatlas_get_related_collections( $collection_id, $limit = 3 ) {
 	arsort( $scores );
 
 	return array_slice( array_keys( $scores ), 0, $limit );
+}
+
+/**
+ * Prime the featured-image cache for every query that returns posts.
+ *
+ * Without this, each `the_post_thumbnail()` call in a listing fetches its
+ * attachment and that attachment's metadata individually - a textbook N+1. It
+ * was invisible until featured images were added, and then it was not: the
+ * homepage went from 35 queries to 82, and the single prompt template from 31
+ * to 65, purely from rendering thumbnails.
+ *
+ * `update_post_thumbnail_cache()` is core's bulk loader for exactly this. One
+ * query fetches every thumbnail for the result set, and every later call reads
+ * the cache.
+ *
+ * Hooked on `the_posts`, so it covers the main query and any secondary
+ * WP_Query - the homepage runs three of its own.
+ *
+ * @param WP_Post[] $posts The posts.
+ * @param WP_Query  $query The query.
+ * @return WP_Post[] The posts, unchanged.
+ */
+function promptatlas_prime_thumbnail_cache( $posts, $query ) {
+	if ( is_admin() || empty( $posts ) || ! $query instanceof WP_Query ) {
+		return $posts;
+	}
+
+	update_post_thumbnail_cache( $query );
+
+	return $posts;
+}
+add_filter( 'the_posts', 'promptatlas_prime_thumbnail_cache', 10, 2 );
+
+/**
+ * Prime caches for a list of post IDs that will be rendered as cards.
+ *
+ * The related-prompts and collection sections resolve IDs rather than running a
+ * WP_Query, so `the_posts` never fires for them and the bulk loader above does
+ * not apply. This warms the post, meta, term and thumbnail caches in a handful
+ * of queries instead of several per card.
+ *
+ * @param int[] $post_ids        Post IDs about to be rendered.
+ * @param bool  $with_thumbnails Whether the caller renders featured images.
+ *                               False for lists that show text only, so they
+ *                               do not pay for a cache they never read.
+ * @return void
+ */
+function promptatlas_prime_posts( $post_ids, $with_thumbnails = true ) {
+	$post_ids = array_values( array_filter( array_map( 'absint', (array) $post_ids ) ) );
+
+	if ( empty( $post_ids ) ) {
+		return;
+	}
+
+	_prime_post_caches( $post_ids, true, true );
+
+	if ( ! $with_thumbnails ) {
+		return;
+	}
+
+	$thumbnail_ids = array();
+
+	foreach ( $post_ids as $post_id ) {
+		$thumbnail_id = get_post_thumbnail_id( $post_id );
+
+		if ( $thumbnail_id ) {
+			$thumbnail_ids[] = (int) $thumbnail_id;
+		}
+	}
+
+	if ( ! empty( $thumbnail_ids ) ) {
+		_prime_post_caches( $thumbnail_ids, false, true );
+	}
 }
