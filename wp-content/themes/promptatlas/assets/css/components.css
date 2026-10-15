@@ -261,9 +261,29 @@ label {
 	border-color: var(--color-primary);
 }
 
+.card__media {
+	display: block;
+	margin: calc(var(--space-md) * -1) calc(var(--space-md) * -1) 0;
+	border-start-start-radius: var(--radius-md);
+	border-start-end-radius: var(--radius-md);
+	overflow: hidden;
+	/* Reserve the slot before the image loads: 16:9 matches the registered
+	   promptatlas-card size, so nothing shifts. Protects the 0.1 CLS budget. */
+	aspect-ratio: 16 / 9;
+	background-color: var(--color-surface-sunken);
+}
+
 .card__media img {
 	width: 100%;
-	border-radius: var(--radius-sm);
+	height: 100%;
+	object-fit: cover;
+	display: block;
+	transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.card:hover .card__media img,
+.card:focus-within .card__media img {
+	opacity: 0.88;
 }
 
 .card__body {

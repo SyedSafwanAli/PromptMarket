@@ -19,6 +19,33 @@ $promptatlas_card_id = (int) get_the_ID();
 ?>
 <article id="card-<?php echo esc_attr( (string) $promptatlas_card_id ); ?>" <?php post_class( 'card card--prompt' ); ?>>
 
+	<?php if ( has_post_thumbnail() ) : ?>
+		<?php
+		/*
+		 * The card image is decorative here: it is a typographic card carrying
+		 * the same title and category that appear in text directly below it.
+		 * So it is hidden from assistive technology and taken out of the tab
+		 * order, rather than making a screen reader announce the title twice.
+		 *
+		 * Explicit width and height come from the registered image size, so the
+		 * space is reserved before the image loads and nothing shifts.
+		 */
+		?>
+		<a class="card__media" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
+			<?php
+			the_post_thumbnail(
+				'promptatlas-card',
+				array(
+					'loading' => 'lazy',
+					'alt'     => '',
+					'width'   => 640,
+					'height'  => 360,
+				)
+			);
+			?>
+		</a>
+	<?php endif; ?>
+
 	<div class="card__body">
 
 		<?php if ( function_exists( 'promptatlas_the_category' ) ) : ?>

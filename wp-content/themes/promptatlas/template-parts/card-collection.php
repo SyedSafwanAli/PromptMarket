@@ -19,6 +19,22 @@ if ( function_exists( 'promptatlas_get_collection_prompts' ) ) {
 ?>
 <article id="card-<?php echo esc_attr( (string) $promptatlas_collection_id ); ?>" <?php post_class( 'card card--collection' ); ?>>
 
+	<?php if ( has_post_thumbnail() ) : ?>
+		<a class="card__media" href="<?php the_permalink(); ?>" tabindex="-1" aria-hidden="true">
+			<?php
+			the_post_thumbnail(
+				'promptatlas-card',
+				array(
+					'loading' => 'lazy',
+					'alt'     => '',
+					'width'   => 640,
+					'height'  => 360,
+				)
+			);
+			?>
+		</a>
+	<?php endif; ?>
+
 	<div class="card__body">
 
 		<div class="card__eyebrow">
