@@ -252,15 +252,19 @@ label {
 	gap: var(--grid-row-gap) var(--grid-col-gap);
 }
 
-@media (min-width: 30em) {
+@media (min-width: 34em) {
 	.card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
-@media (min-width: 52em) {
+/* Three across is the common desktop case. Four made each card about 300px
+   wide, which was too narrow for a title that is a full sentence. */
+@media (min-width: 60em) {
 	.card-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
-@media (min-width: 78em) {
+/* Only on genuinely wide screens, where a third column would otherwise leave
+   the cards oversized. */
+@media (min-width: 104em) {
 	.card-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
@@ -402,33 +406,47 @@ label {
 
 .card__meta {
 	display: flex;
-	align-items: flex-start;
+	flex-direction: column;
+	gap: var(--space-2xs);
+	min-width: 0;
+}
+
+.card__meta-row {
+	display: flex;
+	align-items: center;
 	justify-content: space-between;
 	gap: var(--space-xs);
 	min-width: 0;
 }
 
-.card__meta-main {
-	min-width: 0;
+/* Keep the cards in a row aligned: the meta block sits at the bottom even when
+   one title runs to three lines and its neighbour runs to one. */
+.card {
+	height: 100%;
+}
+
+.card__meta {
+	margin-block-start: auto;
 }
 
 .card__title {
 	margin: 0;
-	font-size: var(--text-sm);
+	font-size: var(--text-md);
 	font-weight: var(--weight-semibold);
-	line-height: 1.35;
-	letter-spacing: 0;
+	line-height: 1.32;
+	letter-spacing: -0.01em;
+	/* Avoid a single orphaned word on the last line. */
+	text-wrap: pretty;
 }
 
 .card__title a {
 	color: var(--color-text);
 	text-decoration: none;
-	/* Two lines maximum: prompt titles are sentences, and truncating to one
-	   would hide the part that distinguishes them. */
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
+	/* No clamp. A prompt title is a sentence and the end of it is usually the
+	   part that distinguishes one prompt from another, so truncating hid
+	   exactly the words a reader needed. Cards in a row keep a common height
+	   from the grid, so a longer title does not break the layout. */
+	display: block;
 }
 
 .card:hover .card__title a {
@@ -437,10 +455,13 @@ label {
 
 .card__category {
 	display: inline-block;
-	margin-block-start: 2px;
 	color: var(--color-text-muted);
 	font-size: var(--text-xs);
 	text-decoration: none;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .card__category:hover {

@@ -107,36 +107,47 @@ $promptatlas_card_term  = function_exists( 'promptatlas_get_prompt_category' )
 	</div>
 
 	<div class="card__meta">
-		<div class="card__meta-main">
-			<h3 class="card__title">
-				<a href="<?php the_permalink(); ?>" tabindex="-1"><?php echo esc_html( $promptatlas_card_title ); ?></a>
-			</h3>
+		<h3 class="card__title">
+			<a href="<?php the_permalink(); ?>" tabindex="-1"><?php echo esc_html( $promptatlas_card_title ); ?></a>
+		</h3>
 
+		<?php
+		/*
+		 * Category and tools share a row BELOW the title, not beside it.
+		 * Sitting them next to the title squeezed it into roughly half the
+		 * card width, so almost every title truncated after two lines - and a
+		 * prompt title is a sentence, so the truncated part was usually the
+		 * part that distinguished it.
+		 */
+		?>
+		<div class="card__meta-row">
 			<?php if ( $promptatlas_card_term ) : ?>
 				<a class="card__category" href="<?php echo esc_url( (string) get_term_link( $promptatlas_card_term ) ); ?>">
 					<?php echo esc_html( $promptatlas_card_term->name ); ?>
 				</a>
+			<?php else : ?>
+				<span></span>
+			<?php endif; ?>
+
+			<?php if ( ! is_wp_error( $promptatlas_card_tools ) && ! empty( $promptatlas_card_tools ) ) : ?>
+				<ul class="card__tools">
+					<?php foreach ( array_slice( $promptatlas_card_tools, 0, 2 ) as $promptatlas_card_tool ) : ?>
+						<li class="card__tool"><?php echo esc_html( $promptatlas_card_tool->name ); ?></li>
+					<?php endforeach; ?>
+					<?php if ( count( $promptatlas_card_tools ) > 2 ) : ?>
+						<li class="card__tool card__tool--more">
+							<?php
+							printf(
+								/* translators: %s: number of additional tools. */
+								esc_html__( '+%s', 'promptatlas' ),
+								esc_html( number_format_i18n( count( $promptatlas_card_tools ) - 2 ) )
+							);
+							?>
+						</li>
+					<?php endif; ?>
+				</ul>
 			<?php endif; ?>
 		</div>
-
-		<?php if ( ! is_wp_error( $promptatlas_card_tools ) && ! empty( $promptatlas_card_tools ) ) : ?>
-			<ul class="card__tools">
-				<?php foreach ( array_slice( $promptatlas_card_tools, 0, 2 ) as $promptatlas_card_tool ) : ?>
-					<li class="card__tool"><?php echo esc_html( $promptatlas_card_tool->name ); ?></li>
-				<?php endforeach; ?>
-				<?php if ( count( $promptatlas_card_tools ) > 2 ) : ?>
-					<li class="card__tool card__tool--more">
-						<?php
-						printf(
-							/* translators: %s: number of additional tools. */
-							esc_html__( '+%s', 'promptatlas' ),
-							esc_html( number_format_i18n( count( $promptatlas_card_tools ) - 2 ) )
-						);
-						?>
-					</li>
-				<?php endif; ?>
-			</ul>
-		<?php endif; ?>
 	</div>
 
 </article>

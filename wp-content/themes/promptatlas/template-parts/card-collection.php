@@ -51,12 +51,12 @@ if ( function_exists( 'promptatlas_get_collection_prompts' ) ) {
 	</div>
 
 	<div class="card__meta">
-		<div class="card__meta-main">
-			<h3 class="card__title">
-				<a href="<?php the_permalink(); ?>" tabindex="-1"><?php echo esc_html( $promptatlas_collection_title ); ?></a>
-			</h3>
+		<h3 class="card__title">
+			<a href="<?php the_permalink(); ?>" tabindex="-1"><?php echo esc_html( $promptatlas_collection_title ); ?></a>
+		</h3>
 
-			<?php if ( $promptatlas_prompt_count > 0 ) : ?>
+		<?php if ( $promptatlas_prompt_count > 0 ) : ?>
+			<div class="card__meta-row">
 				<span class="card__category">
 					<?php
 					printf(
@@ -66,8 +66,8 @@ if ( function_exists( 'promptatlas_get_collection_prompts' ) ) {
 					);
 					?>
 				</span>
-			<?php endif; ?>
-		</div>
+			</div>
+		<?php endif; ?>
 	</div>
 
 </article>
