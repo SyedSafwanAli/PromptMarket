@@ -85,6 +85,29 @@ Started: Phase 02, 2026-10-14.
 - [ ] Verify after deploy: requesting `/CLAUDE.md`, `/DECISIONS.md` and `/docs/` returns 403 or
       404, not 200.
 
+### Legal pages — every placeholder must be filled
+
+The policy pages are live and accurate about what the code does, but each carries visibly marked
+placeholders. **A page with an unfilled placeholder must not be presented as final.**
+
+- [ ] **About** — who runs the site.
+- [ ] **Contact** — a fallback email address on the real domain.
+- [ ] **Privacy Policy** — publication date; hosting provider; email provider if one is added; and
+      **rewrite the Analytics and Advertising sections before either goes live.**
+- [ ] **Terms of Use** — legal or business name; governing jurisdiction; publication date.
+- [ ] **DMCA** — designated agent name, postal address and email. **An unreachable DMCA agent is
+      worse than none.** Consider registering with the US Copyright Office.
+- [ ] **Accessibility** — publication date, and shorten the "not checked" list once Phases 16 and
+      20 have run.
+- [ ] **Have a lawyer review Terms, Privacy and DMCA.** Ownership, liability and jurisdiction are
+      the clauses that matter.
+
+### Consent — required before Phase 18 ships
+
+- [ ] **A consent banner is mandatory the moment analytics or advertising is added** (decision 14).
+      Blocking by default, granular, as easy to refuse as accept, plus **Google Consent Mode v2**
+      for EU traffic. There is deliberately no banner today because there is nothing to consent to.
+
 ### Content
 
 - [ ] **Test-run all 26 published prompts against a real model.** `CONTENT_STRATEGY.md` 6.4

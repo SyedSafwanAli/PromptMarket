@@ -1273,3 +1273,22 @@ a.term-pill:hover {
 .site-notice {
 	margin-block-start: var(--space-lg);
 }
+
+/* -------------------------------------------------------------------------
+   26. POLICY PLACEHOLDERS (Phase 17)
+   Deliberately loud. A policy page with an unfilled placeholder must never be
+   mistakable for a finished one — Phase 17 forbids presenting a placeholder
+   as fact.
+   ------------------------------------------------------------------------- */
+
+.policy-placeholder {
+	display: inline-block;
+	padding: 0.15em 0.5em;
+	margin-block: 0.15em;
+	background-color: var(--color-highlight);
+	border: 2px dashed var(--color-danger);
+	border-radius: var(--radius-sm);
+	color: var(--neutral-900);
+	font-size: var(--text-sm);
+	font-weight: var(--weight-semibold);
+}

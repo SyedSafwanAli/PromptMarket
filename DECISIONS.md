@@ -411,9 +411,72 @@ a route: `prompts`, `collections`, `category`, `tag`, `tool`, `page`, `search`, 
 
 ---
 
+## 14. Consent and cookie banner — **DECIDED** · 2026-10-15 · *Phase 17*
+
+**Decision: no consent banner now. One becomes REQUIRED the moment Phase 18 adds analytics or
+advertising, and Phase 18 must not go live without it.**
+
+### Which regimes apply
+
+Decision 2 settled the audience as global English with a large South Asian share, and explicitly
+noted that EU visitors cannot be excluded. So **GDPR and UK GDPR apply**, and **CCPA** applies to
+Californian visitors. That is not avoidable by targeting, and pretending otherwise is the usual
+way sites end up non-compliant.
+
+### Why no banner today
+
+Because there is currently **nothing to consent to**. Verified against the code:
+
+| | Status |
+|---|---|
+| Cookies set for visitors | **None.** WordPress sets cookies only for logged-in administrators |
+| Analytics | **None.** No script, no identifier, no collection |
+| Advertising | **None.** No ad code is loaded |
+| Third-party scripts | **None** |
+| Browser storage | Saved prompts and the theme choice — see below |
+
+The browser storage is exempt. Under ePrivacy, storage that is strictly necessary for a service
+the user has actively requested does not need consent, and saving a prompt is a thing the visitor
+clicks a button to do. It holds post IDs and timestamps, is never transmitted, and cannot identify
+anyone.
+
+**A consent banner on a site with no tracking is a self-inflicted cost**: it loads JavaScript,
+shifts layout against the Phase 15 CLS budget of 0.1, and asks visitors to make a decision about
+nothing. Phase 17 is explicit — implement what is required and nothing more.
+
+### What triggers one
+
+Adding **any** of the following makes a banner mandatory before it ships:
+
+- Google Analytics, or any analytics that sets an identifier
+- Google AdSense, or any advertising
+- An embedded third party that can set storage — a YouTube embed, a hosted font, a social widget
+
+At that point Phase 18 must implement: a banner that blocks non-essential scripts **until**
+consent, granular enough to refuse analytics and advertising separately, as easy to refuse as to
+accept, with no pre-ticked boxes, and **Google Consent Mode v2**, which Google requires for EU
+traffic to AdSense and Analytics. The privacy policy sections currently marked as placeholders
+must be rewritten in the same change.
+
+### Lawful basis for the newsletter
+
+**Consent**, collected by double opt-in. The address is `pending` until the visitor clicks the
+link in a confirmation email, unconfirmed addresses are deleted after 7 days, and every email
+carries a one-click unsubscribe. The timestamp of confirmation is the record of consent.
+
+### What still needs a lawyer
+
+The policy pages state our real practices accurately, but they are not legal advice and have not
+been reviewed. The clauses that matter if something goes wrong — ownership, liability,
+jurisdiction, and the DMCA agent details — are flagged on the pages themselves and listed in
+`LAUNCH_CHECKLIST.md`.
+
+---
+
 ## Change log
 
 | Date | Change |
 |---|---|
 | 2026-10-14 | File created. Decisions 2, 3, 4, 6, 7, 8 and 11 decided under owner delegation. Decisions 1, 5, 9, 10 recorded as pending with recommendations. Phase 02's provisional settings (locale `en_US`, comments closed, timezone `Asia/Karachi`) are now confirmed by decisions 3 and 6; the placeholder tagline remains Phase 04's to replace. |
 | 2026-10-14 | Phase 04 added decisions 12 (taxonomy) and 13 (URL architecture), both **frozen**. Full specification in `CONTENT_STRATEGY.md`. |
+| 2026-10-15 | Phase 17 added decision 14 (consent). No banner now; mandatory as soon as Phase 18 adds analytics or advertising. |

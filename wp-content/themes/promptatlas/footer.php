@@ -50,6 +50,7 @@ defined( 'ABSPATH' ) || exit;
 					'privacy-policy' => __( 'Privacy Policy', 'promptatlas' ),
 					'terms'          => __( 'Terms', 'promptatlas' ),
 					'dmca'           => __( 'DMCA', 'promptatlas' ),
+					'accessibility'  => __( 'Accessibility', 'promptatlas' ),
 				);
 
 				$promptatlas_policy_links = array();
